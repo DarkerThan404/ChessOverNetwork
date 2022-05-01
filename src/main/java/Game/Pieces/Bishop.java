@@ -1,4 +1,5 @@
-package Game;
+package Game.Pieces;
 
 public class Bishop {
+
 }
