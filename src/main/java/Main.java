@@ -2,8 +2,7 @@ import Game.*;
 
 public class Main {
     public static void main(String[] args){
-        ChessBoard game = new ChessBoard();
-
+        Game game = new Game();
         System.out.println("Hello world");
     }
 }
