@@ -3,8 +3,8 @@ package Piece;
 import Player.Player;
 
 public class Knight extends Piece{
-    private char wknight = '\u265E';
-    private char bknight = '\u2658';
+    private char wknight = '\u2658';
+    private char bknight = '\u265E';
     public Knight(Player player) {
         super(player);
     }
