@@ -18,7 +18,7 @@ public class Game {
     public void run(){
         ChessBoard board = Controller.CreateChessBoard();
         board.draw();
-        boolean WhiteTurn = true;
+        boolean whiteTurn = true;
         try {
             while(true) {
                 var rawInput = getInput().split("\s+");
@@ -27,12 +27,13 @@ public class Game {
                         System.out.println("Help invoked");
                     }
                 } else if (rawInput.length == 2) {
-                    if (Controller.IsValidMove(board,rawInput[0],rawInput[1],WhiteTurn)) {
+                    if (Controller.IsValidMove(board,rawInput[0],rawInput[1],whiteTurn)) {
                         System.out.println("Is valid coord");
                         //System.out.println("From: x:" + fromInput[0] + ", y:" + fromInput[1]);
                         //System.out.println("To: x:" + toInput[0] + ", y:" + toInput[1]);
-                        board = Controller.PerformMove(board, rawInput[0], rawInput[1], WhiteTurn);
+                        board = Controller.PerformMove(board, rawInput[0], rawInput[1], whiteTurn);
                         board.draw();
+                        whiteTurn = !whiteTurn;
                     } else {
                         System.out.println("Is not valid input");
                     }

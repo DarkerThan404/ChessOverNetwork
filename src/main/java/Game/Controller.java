@@ -46,6 +46,8 @@ public class Controller {
             System.out.println("Not in bounds");
             return false;
         }
+
+
         return true;
     }
 
@@ -71,6 +73,9 @@ public class Controller {
         if(whiteTurn){
             var movingPiece = board.board[IntsFrom[1]][IntsFrom[0]];
             System.out.println("From x:" + IntsFrom[0] + ", y:" + IntsFrom[1]);
+            var back = CoordinateConvertor.IntToStringCoord(IntsFrom);
+            System.out.println(back);
+            System.out.println(CoordinateConvertor.IntToStringCoord(IntsTo));
             movingPiece.getPiece().draw();
             newBoard.board[IntsTo[1]][IntsTo[0]] = movingPiece;
             newBoard.board[IntsFrom[1]][IntsFrom[0]] = null;
