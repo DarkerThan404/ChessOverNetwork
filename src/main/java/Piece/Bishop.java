@@ -1,5 +1,6 @@
 package Piece;
 
+import Game.ChessBoard;
 import Player.Player;
 
 public class Bishop extends Piece{
@@ -16,5 +17,10 @@ public class Bishop extends Piece{
         } else {
             System.out.print(bbishop);
         }
+    }
+
+    @Override
+    public boolean IsValidMove(ChessBoard board, Integer[] from, Integer[] to, boolean whiteTurn) {
+        return false;
     }
 }
