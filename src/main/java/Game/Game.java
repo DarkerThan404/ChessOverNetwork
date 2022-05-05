@@ -1,8 +1,5 @@
 package Game;
 
-import Piece.*;
-import Player.Player;
-import Square.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,8 +7,6 @@ import java.io.InputStreamReader;
 
 public class Game {
 
-
-    //private String[] moveInput;
     private Integer[] fromInput = new Integer[2];
     private Integer[] toInput = new Integer[2];
     private String horizontal = "abcdefgh";
@@ -21,12 +16,16 @@ public class Game {
     }
 
     public void run(){
+        ChessBoard board = Controller.CreateChessBoard();
+        board.draw();
+        boolean isWhiteTurn = true;
         try {
             while(true){
                 var rawInput = getInput();
                 if(rawInput.equals("help")){
                     System.out.println("Help invoked");
                 } else if(isValidCoord(rawInput)){
+
                     System.out.println("Is valid coord");
                     System.out.println("From: x:" + fromInput[0] + ", y:" + fromInput[1]);
                     System.out.println("To: x:" + toInput[0] + ", y:" + toInput[1]);
