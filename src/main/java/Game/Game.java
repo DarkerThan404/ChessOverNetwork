@@ -18,34 +18,38 @@ public class Game {
     public void run(){
         ChessBoard board = Controller.CreateChessBoard();
         board.draw();
-        boolean isWhiteTurn = true;
+        boolean WhiteTurn = true;
         try {
-            while(true){
-                var rawInput = getInput();
-                if(rawInput.equals("help")){
-                    System.out.println("Help invoked");
-                } else if(isValidCoord(rawInput)){
-
-                    System.out.println("Is valid coord");
-                    System.out.println("From: x:" + fromInput[0] + ", y:" + fromInput[1]);
-                    System.out.println("To: x:" + toInput[0] + ", y:" + toInput[1]);
-                } else {
-                    System.out.println("Is not valid input");
+            while(true) {
+                var rawInput = getInput().split("\s+");
+                if (rawInput.length == 1) {
+                    if (rawInput[0].equals("help")) {
+                        System.out.println("Help invoked");
+                    }
+                } else if (rawInput.length == 2) {
+                    if (Controller.IsValidMove(board,rawInput[0],rawInput[1],WhiteTurn)) {
+                        System.out.println("Is valid coord");
+                        //System.out.println("From: x:" + fromInput[0] + ", y:" + fromInput[1]);
+                        //System.out.println("To: x:" + toInput[0] + ", y:" + toInput[1]);
+                        board = Controller.PerformMove(board, rawInput[0], rawInput[1], WhiteTurn);
+                        board.draw();
+                    } else {
+                        System.out.println("Is not valid input");
+                    }
                 }
             }
-        }catch (IOException ex) {
-
+        } catch (IOException ex){
+            ex.printStackTrace();
         }
+
     }
 
     private String getInput() throws IOException {
         var rawInput = bufferedReader.readLine();
-        //moveInput = rawInput.split("\s+");
-
         return rawInput;
     }
 
-    private boolean isValidCoord(String rawMoveInput){
+    /*private boolean isValidCoord(String rawMoveInput){
         var moveInput = rawMoveInput.split("\s+");
         Integer from;
         Integer to;
@@ -70,7 +74,7 @@ public class Game {
         toInput[0] = horizontal.indexOf(moveInput[1].charAt(0)) ;
         toInput[1] = to - 1;
         return true;
-    }
+    }*/
 
 
 

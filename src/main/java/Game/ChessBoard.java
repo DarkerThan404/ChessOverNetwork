@@ -4,7 +4,7 @@ import Square.Square;
 
 public class ChessBoard {
     private int size;
-    private Square[][] board;
+    public Square[][] board;
     public ChessBoard(Square[][] board, int size){
         this.size = size;
         this.board = board;
