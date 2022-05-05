@@ -4,8 +4,8 @@ import Game.ChessBoard;
 import Player.Player;
 
 public class Pawn extends Piece{
-    private char wpawn = '\u2659';
-    private char bpawn = '\u265F';
+    private String wpawn = "wP";
+    private String bpawn = "bP";
     public Pawn(Player player) {
         super(player);
     }

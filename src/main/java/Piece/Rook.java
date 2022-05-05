@@ -4,8 +4,8 @@ import Game.ChessBoard;
 import Player.Player;
 
 public class Rook extends Piece{
-    private char wrook = '\u2656';
-    private char brook = '\u265C';
+    private String wrook = "wR";
+    private String brook = "bR";
     public Rook(Player player) {
         super(player);
     }

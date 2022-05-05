@@ -4,8 +4,8 @@ import Game.ChessBoard;
 import Player.Player;
 
 public class Bishop extends Piece{
-    private char wbishop = '\u2657';
-    private char bbishop = '\u265D';
+    private String wbishop = "wB";
+    private String bbishop = "bB";
     public Bishop(Player player) {
         super(player);
     }

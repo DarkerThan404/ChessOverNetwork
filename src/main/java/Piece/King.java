@@ -4,8 +4,8 @@ import Game.ChessBoard;
 import Player.Player;
 
 public class King extends Piece{
-    private char wking = '\u2654';
-    private char bking = '\u265A';
+    private String wking = "wK";
+    private String bking = "bK";
     public King(Player player) {
         super(player);
     }

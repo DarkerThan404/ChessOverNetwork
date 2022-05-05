@@ -18,11 +18,11 @@ public class ChessBoard {
                     board[x][y].getPiece().draw();
                     System.out.print(" ");
                 } else {
-                    System.out.print(" ");
+                    System.out.print("   ");
                 }
             }
             System.out.println();
         }
-        System.out.println("  a  b c  d  e f  g  h");
+        System.out.println("   a  b  c  d  e  f  g  h");
     }
 }
