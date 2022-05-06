@@ -1,8 +1,10 @@
 package Piece;
 
 import Game.ChessBoard;
+import Game.CoordinateConvertor;
 import Player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Piece{
@@ -23,14 +25,70 @@ public class Pawn extends Piece{
 
     @Override
     public boolean IsValidMove(ChessBoard chessBoard, Integer[] from, Integer[] to, boolean whiteTurn) {
-        if(this.moveCount == 0){}
+        List<String> allValidMoves = new ArrayList<>();
+        Integer xFrom = from[0];
+        Integer yFrom = from[1];
+        var board = chessBoard.board;
+        if(whiteTurn != this.player.isWhiteSide()){
+            System.out.println("Incorrect color to move from");
+            return false;
+        }
+        if(this.player.isWhiteSide() == true){
+            System.out.println("White side is playing");
+            if(this.moveCount == 0 && board[yFrom - 1][xFrom] == null && board[yFrom - 2][xFrom] == null){ //its first move
+                allValidMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 2,xFrom}));
+            }
+
+            if(board[yFrom - 1][xFrom] == null){
+                var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom });
+                allValidMoves.add(strCoord);
+            }
+
+            if(xFrom - 1 >= 0){
+                var diagonalPiece = board[yFrom - 1][xFrom - 1];
+                if(diagonalPiece != null){
+                    if(diagonalPiece.getPiece().player.isWhiteSide() == false){ //false = black
+                        var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom - 1});
+                        allValidMoves.add(strCoord);
+                    }
+                }
+            }
+
+            if(xFrom + 1 < 8){
+                var diagonalPiece = board[yFrom - 1][xFrom + 1];
+                if(diagonalPiece != null){
+                    if(diagonalPiece.getPiece().player.isWhiteSide() == false){
+                        var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom + 1});
+                        allValidMoves.add(strCoord);
+                    }
+                }
+            }
+
+            if(yFrom == 4){ //en passent
+                var lastMovedPos = chessBoard.coordLastPieceMoved;
+                var lastMovedSquare = board[lastMovedPos[1]][lastMovedPos[0]];
+                if(lastMovedSquare != null){
+                    var lastMovedPiece = lastMovedSquare.getPiece();
+                    if(lastMovedPiece instanceof Pawn && lastMovedPiece.moveCount == 1){
+                        if(lastMovedPos[1] == yFrom){
+                            if(lastMovedPos[0] == xFrom + 1){
+                                allValidMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom + 1}));
+                            }
+
+                            if(lastMovedPos[0] == xFrom - 1){
+                                allValidMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom - 1}));
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else {
+            System.out.println("Black side is playing");
+        }
         return false;
     }
 
-    @Override
-    public List<String> GenerateValidMoves() {
-        return null;
-    }
 
 
 }

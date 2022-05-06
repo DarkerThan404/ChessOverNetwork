@@ -19,5 +19,4 @@ public abstract class Piece {
 
     public abstract void draw();
     public abstract boolean IsValidMove(ChessBoard board, Integer[] from, Integer[] to, boolean whiteTurn);
-    public abstract List<String> GenerateValidMoves();
 }

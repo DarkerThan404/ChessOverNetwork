@@ -1,13 +1,32 @@
 package Game;
 
+import Piece.Piece;
 import Square.Square;
+
+import java.util.List;
 
 public class ChessBoard {
     private int size;
     public Square[][] board;
+    //public Piece lastPieceMoved;
+    public Integer[] coordLastPieceMoved;
+    public List<String> allValidMoves;
     public ChessBoard(Square[][] board, int size){
         this.size = size;
         this.board = board;
+    }
+
+    public void ResetMoves(){
+        allValidMoves.clear();
+    }
+
+    public Piece GetSquereOfLastPiece(){
+        var square = this.board[coordLastPieceMoved[1]][coordLastPieceMoved[0]];
+        if(square == null){
+            return null;
+        }
+
+        return square.getPiece();
     }
 
     public void draw(){
