@@ -41,12 +41,23 @@ public class Controller {
         return board;
     }
 
-    public static boolean IsValidMove(ChessBoard board, String from, String to, boolean whiteTurn){
+    public static boolean IsValidMove(ChessBoard chessBoard, String from, String to, boolean whiteTurn){
         if(!CoordInBounds(from) || !CoordInBounds(to)){
             System.out.println("Not in bounds");
             return false;
         }
+        var fromCoord = CoordinateConvertor.StringToIntCoord(from);
+        var toCoord = CoordinateConvertor.StringToIntCoord(to);
 
+        var movingPiece = chessBoard.board[fromCoord[1]][fromCoord[0]];
+        if(movingPiece != null){
+            if(movingPiece.getPiece().IsValidMove(chessBoard, fromCoord, toCoord, whiteTurn)){
+                System.out.println("Piece can move in that way");
+            } else {
+                System.out.println("Piece cannot move in that way");
+                return false;
+            }
+        }
 
         return true;
     }

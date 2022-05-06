@@ -3,6 +3,8 @@ package Piece;
 import Game.ChessBoard;
 import Player.Player;
 
+import java.util.List;
+
 public class King extends Piece{
     private String wking = "wK";
     private String bking = "bK";
@@ -22,5 +24,10 @@ public class King extends Piece{
     @Override
     public boolean IsValidMove(ChessBoard board, Integer[] from, Integer[] to, boolean whiteTurn) {
         return false;
+    }
+
+    @Override
+    public List<String> GenerateValidMoves() {
+        return null;
     }
 }

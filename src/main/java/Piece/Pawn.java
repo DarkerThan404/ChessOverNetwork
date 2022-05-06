@@ -3,6 +3,8 @@ package Piece;
 import Game.ChessBoard;
 import Player.Player;
 
+import java.util.List;
+
 public class Pawn extends Piece{
     private String wpawn = "wP";
     private String bpawn = "bP";
@@ -20,7 +22,15 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public boolean IsValidMove(ChessBoard board, Integer[] from, Integer[] to, boolean whiteTurn) {
+    public boolean IsValidMove(ChessBoard chessBoard, Integer[] from, Integer[] to, boolean whiteTurn) {
+        if(this.moveCount == 0){}
         return false;
     }
+
+    @Override
+    public List<String> GenerateValidMoves() {
+        return null;
+    }
+
+
 }

@@ -3,6 +3,8 @@ package Piece;
 import Game.ChessBoard;
 import Player.Player;
 
+import java.util.List;
+
 public class Queen extends Piece{
     private String wqueen = "wQ";
     private String bqueen = "bQ";
@@ -26,5 +28,10 @@ public class Queen extends Piece{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<String> GenerateValidMoves() {
+        return null;
     }
 }
