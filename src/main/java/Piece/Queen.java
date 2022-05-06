@@ -30,8 +30,4 @@ public class Queen extends Piece{
         return true;
     }
 
-    @Override
-    public List<String> GenerateValidMoves() {
-        return null;
-    }
 }

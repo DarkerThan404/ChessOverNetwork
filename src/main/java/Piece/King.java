@@ -26,8 +26,4 @@ public class King extends Piece{
         return false;
     }
 
-    @Override
-    public List<String> GenerateValidMoves() {
-        return null;
-    }
 }

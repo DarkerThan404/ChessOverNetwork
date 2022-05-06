@@ -26,8 +26,4 @@ public class Bishop extends Piece{
         return false;
     }
 
-    @Override
-    public List<String> GenerateValidMoves() {
-        return null;
-    }
 }

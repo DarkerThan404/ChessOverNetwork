@@ -26,8 +26,5 @@ public class Rook extends Piece{
         return false;
     }
 
-    @Override
-    public List<String> GenerateValidMoves() {
-        return null;
-    }
+
 }
