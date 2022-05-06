@@ -25,7 +25,11 @@ public class Pawn extends Piece{
 
     @Override
     public boolean IsValidMove(ChessBoard chessBoard, Integer[] from, Integer[] to, boolean whiteTurn) {
-        List<String> allValidMoves = new ArrayList<>();
+        System.out.println("Piece moving from, x:" + from[0] + ", y: " + from[1]);
+        System.out.println("Piece moving to, x:" + to[0] + ", y: " + to[1]);
+        System.out.println("Converted from: " + CoordinateConvertor.IntToStringCoord(from));
+        System.out.println("Converted to: " + CoordinateConvertor.IntToStringCoord(to));
+        List<String> allValidPieceMoves = new ArrayList<>();
         Integer xFrom = from[0];
         Integer yFrom = from[1];
         var board = chessBoard.board;
@@ -34,22 +38,27 @@ public class Pawn extends Piece{
             return false;
         }
         if(this.player.isWhiteSide() == true){
-            System.out.println("White side is playing");
+            //System.out.println("White side is playing");
             if(this.moveCount == 0 && board[yFrom - 1][xFrom] == null && board[yFrom - 2][xFrom] == null){ //its first move
-                allValidMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 2,xFrom}));
+                //System.out.println("Y: " + yFrom + ",X: " +xFrom);
+                var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom , (yFrom - 2)});
+                //System.out.println("First move of two: " + strCoord);
+                allValidPieceMoves.add(strCoord);
             }
 
             if(board[yFrom - 1][xFrom] == null){
-                var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom });
-                allValidMoves.add(strCoord);
+                var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom, yFrom - 1 });
+                //System.out.println("Just a first move: " + strCoord);
+                allValidPieceMoves.add(strCoord);
             }
 
             if(xFrom - 1 >= 0){
                 var diagonalPiece = board[yFrom - 1][xFrom - 1];
                 if(diagonalPiece != null){
                     if(diagonalPiece.getPiece().player.isWhiteSide() == false){ //false = black
-                        var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom - 1});
-                        allValidMoves.add(strCoord);
+                        var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom, yFrom - 1});
+                        //System.out.println("Can take left: " + strCoord);
+                        allValidPieceMoves.add(strCoord);
                     }
                 }
             }
@@ -58,8 +67,9 @@ public class Pawn extends Piece{
                 var diagonalPiece = board[yFrom - 1][xFrom + 1];
                 if(diagonalPiece != null){
                     if(diagonalPiece.getPiece().player.isWhiteSide() == false){
-                        var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom + 1});
-                        allValidMoves.add(strCoord);
+                        var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom - 1, yFrom + 1});
+                        System.out.println("Can take right: " + strCoord);
+                        allValidPieceMoves.add(strCoord);
                     }
                 }
             }
@@ -71,16 +81,27 @@ public class Pawn extends Piece{
                     var lastMovedPiece = lastMovedSquare.getPiece();
                     if(lastMovedPiece instanceof Pawn && lastMovedPiece.moveCount == 1){
                         if(lastMovedPos[1] == yFrom){
+                            //System.out.println("Should not be executed");
                             if(lastMovedPos[0] == xFrom + 1){
-                                allValidMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom + 1}));
+                                allValidPieceMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom + 1}));
                             }
 
                             if(lastMovedPos[0] == xFrom - 1){
-                                allValidMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom - 1}));
+                                allValidPieceMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{yFrom - 1, xFrom - 1}));
                             }
                         }
                     }
                 }
+            }
+            System.out.println("All moves: ");
+            for (String move: allValidPieceMoves){
+                System.out.println(move);
+            }
+            if(allValidPieceMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
+                chessBoard.allValidMoves.addAll(allValidPieceMoves);
+                System.out.println("Lol");
+            } else {
+                System.out.println("Omegalul");
             }
 
         } else {

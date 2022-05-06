@@ -2,6 +2,7 @@ package Game;
 
 public class CoordinateConvertor {
     private static String horizontal = "abcdefgh";
+    private static String reversed = "87654321";
     public static Integer[] StringToIntCoord(String pos){
         assert (pos.length() == 2);
         var result = new Integer[2];
@@ -11,10 +12,14 @@ public class CoordinateConvertor {
     }
 
     public static String IntToStringCoord(Integer[] coord){
+
         assert (coord.length == 2);
         var result = "";
         result += horizontal.charAt(coord[0]);
-        result += ((8 - coord[1]) % 9);
+        result += reversed.charAt(coord[1])  ;
+
         return result;
     }
+
+
 }
