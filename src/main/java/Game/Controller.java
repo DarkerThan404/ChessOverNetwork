@@ -113,10 +113,11 @@ public class Controller {
                     var EnPassableSquare = newBoard.board[IntsTo[1]+1][IntsTo[0]];
                     assert (EnPassableSquare != null);
                     newBoard.board[IntsTo[1]+1][IntsTo[0]] = null;
+                    var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[1]+1,IntsTo[0]});
+                    int index = newBoard.blackPieces.indexOf(stringPos);
+                    newBoard.blackPieces.remove(index);
                 }
-                var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[1]+1,IntsTo[0]});
-                int index = newBoard.blackPieces.indexOf(stringPos);
-                newBoard.blackPieces.remove(index);
+
                 System.out.println("Is intance of pawn");
             }
 
@@ -127,10 +128,11 @@ public class Controller {
                     var EnPassableSquare = newBoard.board[IntsTo[1]-1][IntsTo[0]];
                     assert (EnPassableSquare != null);
                     newBoard.board[IntsTo[1]-1][IntsTo[0]] = null;
+                    var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[1]-1,IntsTo[0]});
+                    int index = newBoard.blackPieces.indexOf(stringPos);
+                    newBoard.blackPieces.remove(index);
                 }
-                var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[1]-1,IntsTo[0]});
-                int index = newBoard.blackPieces.indexOf(stringPos);
-                newBoard.blackPieces.remove(index);
+
                 System.out.println("Is intance of pawn");
             }
         }

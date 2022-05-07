@@ -29,27 +29,8 @@ public class Knight extends Piece{
             System.out.println("You cant play with this piece!");
             return false;
         }
-        this.validMoves = new ArrayList<>();
-        int xFrom = from[0];
-        int yFrom = from[1];
+        this.validMoves = this.getValidMoves(chessBoard,CoordinateConvertor.IntToStringCoord(from));
 
-        int[] directionXList = new int[]{2,2,-2,-2,1,1,-1,-1};
-        int[] directionYList = new int[]{1,-1,1,-1,2,-2,2,-2};
-        int directionListSize = 8;
-        var board = chessBoard.board;
-        for(int directionIndex = 0; directionIndex < directionListSize; directionIndex++){
-            int xTarget = xFrom + directionXList[directionIndex];
-            int yTarget = yFrom + directionYList[directionIndex];
-            if(xTarget < 8 && yTarget < 8 && xTarget >= 0 && yTarget >= 0){
-                var square = board[yTarget][xTarget];
-                if(square == null){
-                    validMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xTarget, yTarget}));
-                } else if(square.getPiece().player.isWhiteSide() != this.player.isWhiteSide()){
-                    validMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xTarget, yTarget}));
-                }
-            }
-        }
-        chessBoard.allValidMoves.addAll(this.validMoves);
         if(validMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
             return true;
         } else {

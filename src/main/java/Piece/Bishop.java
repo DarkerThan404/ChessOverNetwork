@@ -29,9 +29,22 @@ public class Bishop extends Piece{
             System.out.println("You cant play with this piece!");
             return false;
         }
-        this.validMoves = new ArrayList<>();
-        int xFrom = from[0];
-        int yFrom = from[1];
+        this.validMoves = this.getValidMoves(chessBoard,CoordinateConvertor.IntToStringCoord(from));
+
+        if(this.validMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public List<String> getValidMoves(ChessBoard chessBoard, String from) {
+        var result = new ArrayList<String>();
+        var IntFrom = CoordinateConvertor.StringToIntCoord(from);
+        int xFrom = IntFrom[0];
+        int yFrom = IntFrom[1];
         int[] directionXList = new int[]{1,-1, 1,-1};
         int[] directionYList = new int[]{1, 1,-1,-1};
         int directionSize = 4;
@@ -45,11 +58,11 @@ public class Bishop extends Piece{
                     var board = chessBoard.board;
                     var targetSquare = board[targetY][targetX];
                     if(targetSquare == null){ //free square
-                        validMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{targetX, targetY}));
+                        result.add(CoordinateConvertor.IntToStringCoord(new Integer[]{targetX, targetY}));
                     } else {
                         var piece = targetSquare.getPiece();
                         if(piece.player.isWhiteSide() != this.player.isWhiteSide()){ //has different color
-                            validMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{targetX, targetY}));
+                            result.add(CoordinateConvertor.IntToStringCoord(new Integer[]{targetX, targetY}));
                             break;
                         } else {
                             break;
@@ -60,14 +73,7 @@ public class Bishop extends Piece{
                 }
             }
         }
-        chessBoard.allValidMoves.addAll(this.validMoves);
-
-        if(this.validMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
-            return true;
-        } else {
-            return false;
-        }
-
+        return result;
     }
 
 }
