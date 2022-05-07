@@ -33,7 +33,7 @@ public class King extends Piece{
         var board = chessBoard.board;
         for(int x = -1; x < 2;x++){
             for(int y = -1; y < 2; y++){
-                if(x != 0 && y != 0){
+                if(x != 0 || y != 0){
                     int xTarget = xFrom + x;
                     int yTarget = yFrom + y;
                     if(xTarget < 8 && yTarget < 8 && xTarget >= 0 && yTarget >= 0){
@@ -46,12 +46,15 @@ public class King extends Piece{
                             //idk should not be possible
                         }
                     } else {
-                        break;
+                       //do nothing
                     }
                 }
             }
         }
-
+        System.out.println("King moves:");
+        for(String move: validMoves){
+            System.out.println(move);
+        }
         chessBoard.allValidMoves.addAll(this.validMoves);
         if(this.validMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
             return true;
