@@ -25,10 +25,7 @@ public class Pawn extends Piece{
 
     @Override
     public boolean IsValidMove(ChessBoard chessBoard, Integer[] from, Integer[] to, boolean whiteTurn) {
-        //System.out.println("Piece moving from, x:" + from[0] + ", y: " + from[1]);
-        //System.out.println("Piece moving to, x:" + to[0] + ", y: " + to[1]);
-        //System.out.println("Converted from: " + CoordinateConvertor.IntToStringCoord(from));
-        //System.out.println("Converted to: " + CoordinateConvertor.IntToStringCoord(to));
+
         List<String> allValidPieceMoves = new ArrayList<>();
         Integer xFrom = from[0];
         Integer yFrom = from[1];
@@ -93,10 +90,6 @@ public class Pawn extends Piece{
                     }
                 }
             }
-            System.out.println("All possible moves");
-            for(String move : allValidPieceMoves){
-                System.out.println(move);
-            }
             this.validMoves = allValidPieceMoves;
             chessBoard.allValidMoves.addAll(allValidPieceMoves);
             if(allValidPieceMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
@@ -143,7 +136,7 @@ public class Pawn extends Piece{
             }
 
             if(yFrom == 4){ //en passent
-                System.out.println("En passable");
+                //System.out.println("En passable");
                 var lastMovedPos = chessBoard.coordLastPieceMoved;
 
                 var lastMovedSquare = board[lastMovedPos[1]][lastMovedPos[0]];
@@ -152,7 +145,7 @@ public class Pawn extends Piece{
                     var lastMovedPiece = lastMovedSquare.getPiece();
                     if(lastMovedPiece instanceof Pawn && lastMovedPiece.moveCount == 1){
                         if(lastMovedPos[1] == yFrom){
-                            System.out.println("Should be executed");
+                            //System.out.println("Should be executed");
                             if(lastMovedPos[0] == xFrom + 1){
                                 allValidPieceMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom + 1, yFrom + 1}));
                             }
@@ -164,7 +157,7 @@ public class Pawn extends Piece{
                     }
                 }
             }
-            System.out.println("All possible moves");
+            //System.out.println("All possible moves");
             for(String move : allValidPieceMoves){
                 System.out.println(move);
             }
