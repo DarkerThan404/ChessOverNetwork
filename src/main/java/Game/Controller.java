@@ -10,33 +10,34 @@ public class Controller {
         Square[][] squares = new Square[size][size];
         Player white = new Player(true);
         Player black = new Player(false);
+        //Pawn whitePawn = new Pawn(white);
         for(int i = 0; i < size; i++){
-            squares[1][i] = new Square( new Pawn(black));
-            squares[6][i] = new Square( new Pawn(white));
+            squares[1][i] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{i,1}), new Pawn(black));
+            squares[6][i] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{i,6}), new Pawn(white));
         }
-        squares[0][3] = new Square( new Queen(black));
-        squares[7][3] = new Square( new Queen(white));
+        squares[0][3] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{3,0}), new Queen(black));
+        squares[7][3] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{3,7}), new Queen(white));
 
-        squares[7][4] = new Square( new King(white));
-        squares[0][4] = new Square( new King(black));
+        squares[7][4] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{4,7}), new King(white));
+        squares[0][4] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{4,0}), new King(black));
 
-        squares[0][0] = new Square( new Rook(black));
-        squares[0][7] = new Square( new Rook(black));
+        squares[0][0] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{0,0}), new Rook(black));
+        squares[0][7] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{7,0}), new Rook(black));
 
-        squares[7][0] = new Square( new Rook(white));
-        squares[7][7] = new Square( new Rook(white));
+        squares[7][0] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{0,7}), new Rook(white));
+        squares[7][7] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{7,7}), new Rook(white));
 
-        squares[0][1] = new Square( new Knight(black));
-        squares[0][6] = new Square( new Knight(black));
+        squares[0][1] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{1,0}), new Knight(black));
+        squares[0][6] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{6,0}), new Knight(black));
 
-        squares[7][1] = new Square( new Knight(white));
-        squares[7][6] = new Square( new Knight(white));
+        squares[7][1] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{1,7}), new Knight(white));
+        squares[7][6] = new Square( CoordinateConvertor.IntToStringCoord( new Integer[]{6,7}), new Knight(white));
 
-        squares[0][2] = new Square( new Bishop(black));
-        squares[0][5] = new Square( new Bishop(black));
+        squares[0][2] = new Square( CoordinateConvertor.IntToStringCoord(new Integer[]{2,0}), new Bishop(black));
+        squares[0][5] = new Square( CoordinateConvertor.IntToStringCoord(new Integer[]{5,0}), new Bishop(black));
 
-        squares[7][2] = new Square( new Bishop(white));
-        squares[7][5] = new Square( new Bishop(white));
+        squares[7][2] = new Square( CoordinateConvertor.IntToStringCoord(new Integer[]{2,7}), new Bishop(white));
+        squares[7][5] = new Square( CoordinateConvertor.IntToStringCoord(new Integer[]{5,7}),new Bishop(white));
         var board = new ChessBoard(squares, size);
         return board;
     }
@@ -52,7 +53,7 @@ public class Controller {
         var movingPiece = chessBoard.board[fromCoord[1]][fromCoord[0]];
         if(movingPiece != null){
             if(movingPiece.getPiece().IsValidMove(chessBoard, fromCoord, toCoord, whiteTurn)){
-                System.out.println("Piece can move in that way");
+                //System.out.println("Piece can move in that way");
                 return true;
             } else {
                 System.out.println("Piece cannot move in that way");
@@ -85,14 +86,48 @@ public class Controller {
         var IntsFrom = CoordinateConvertor.StringToIntCoord(from);
         var IntsTo = CoordinateConvertor.StringToIntCoord(to);
         if(whiteTurn){
-            var movingPiece = board.board[IntsFrom[1]][IntsFrom[0]];
-            System.out.println("From x:" + IntsFrom[0] + ", y:" + IntsFrom[1]);
-            System.out.println("To x:" + IntsTo[0] + ", y:" + IntsTo[1]);
-            //var back = CoordinateConvertor.IntToStringCoord(IntsFrom);
-
-            newBoard.board[IntsTo[1]][IntsTo[0]] = movingPiece;
+            var targetSquare = newBoard.board[IntsFrom[1]][IntsFrom[0]];
+            if(targetSquare != null){
+                var movingPiece = targetSquare.getPiece();
+                if(movingPiece instanceof Pawn){
+                    if(IntsFrom[1] == 3 && IntsTo[1] == 2 && IntsFrom[0] != IntsTo[0] && newBoard.board[IntsTo[1]][IntsTo[0]] == null ){
+                        movingPiece.moveCount++;
+                        var EnPassableSquare = newBoard.board[IntsTo[1]+1][IntsTo[0]];
+                        if(EnPassableSquare == null){
+                            System.out.println("Enpassable square is null");
+                        } else {
+                            newBoard.board[IntsTo[1]+1][IntsTo[0]] = null;
+                        }
+                    }
+                    System.out.println("Is intance of pawn");
+                }
+            }
+            board.coordLastPieceMoved = IntsTo;
+            newBoard.board[IntsTo[1]][IntsTo[0]] = targetSquare;
             newBoard.board[IntsFrom[1]][IntsFrom[0]] = null;
+            targetSquare.getPiece().moveCount++;
 
+        } else {
+            var targetSquare = board.board[IntsFrom[1]][IntsFrom[0]];
+            if(targetSquare != null){
+                var movingPiece = targetSquare.getPiece();
+                if(movingPiece instanceof Pawn){
+                    if(IntsFrom[1] == 4 && IntsTo[1] == 5 && IntsFrom[0] != IntsTo[0] && newBoard.board[IntsTo[1]][IntsTo[0]] == null ){
+                        movingPiece.moveCount++;
+                        var EnPassableSquare = newBoard.board[IntsTo[1]-1][IntsTo[0]];
+                        if(EnPassableSquare == null){
+                            System.out.println("Enpassable square is null");
+                        } else {
+                            newBoard.board[IntsTo[1]-1][IntsTo[0]] = null;
+                        }
+                    }
+                    System.out.println("Is intance of pawn");
+                }
+            }
+            board.coordLastPieceMoved = IntsTo;
+            newBoard.board[IntsTo[1]][IntsTo[0]] = targetSquare;
+            newBoard.board[IntsFrom[1]][IntsFrom[0]] = null;
+            targetSquare.getPiece().moveCount++;
         }
         return newBoard;
     }

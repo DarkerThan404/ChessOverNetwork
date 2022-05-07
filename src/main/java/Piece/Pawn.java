@@ -74,7 +74,7 @@ public class Pawn extends Piece{
                 }
             }
 
-            if(yFrom == 4){ //en passent
+            if(yFrom == 3){ //en passent
                 var lastMovedPos = chessBoard.coordLastPieceMoved;
                 var lastMovedSquare = board[lastMovedPos[1]][lastMovedPos[0]];
                 if(lastMovedSquare != null){
@@ -87,13 +87,17 @@ public class Pawn extends Piece{
                             }
 
                             if(lastMovedPos[0] == xFrom - 1){
-                                allValidPieceMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom + 1, yFrom - 1}));
+                                allValidPieceMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom - 1, yFrom - 1}));
                             }
                         }
                     }
                 }
             }
-
+            System.out.println("All possible moves");
+            for(String move : allValidPieceMoves){
+                System.out.println(move);
+            }
+            this.validMoves = allValidPieceMoves;
             chessBoard.allValidMoves.addAll(allValidPieceMoves);
             if(allValidPieceMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
                 return true;
@@ -128,7 +132,7 @@ public class Pawn extends Piece{
             }
 
             if(xFrom + 1 < 8){
-                var diagonalPiece = board[yFrom - 1][xFrom + 1];
+                var diagonalPiece = board[yFrom + 1][xFrom + 1];
                 if(diagonalPiece != null){
                     if(diagonalPiece.getPiece().player.isWhiteSide() == true){
                         var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom + 1, yFrom + 1});
@@ -138,14 +142,17 @@ public class Pawn extends Piece{
                 }
             }
 
-            if(yFrom == 5){ //en passent
+            if(yFrom == 4){ //en passent
+                System.out.println("En passable");
                 var lastMovedPos = chessBoard.coordLastPieceMoved;
+
                 var lastMovedSquare = board[lastMovedPos[1]][lastMovedPos[0]];
                 if(lastMovedSquare != null){
+
                     var lastMovedPiece = lastMovedSquare.getPiece();
                     if(lastMovedPiece instanceof Pawn && lastMovedPiece.moveCount == 1){
                         if(lastMovedPos[1] == yFrom){
-                            //System.out.println("Should not be executed");
+                            System.out.println("Should be executed");
                             if(lastMovedPos[0] == xFrom + 1){
                                 allValidPieceMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom + 1, yFrom + 1}));
                             }
@@ -157,6 +164,11 @@ public class Pawn extends Piece{
                     }
                 }
             }
+            System.out.println("All possible moves");
+            for(String move : allValidPieceMoves){
+                System.out.println(move);
+            }
+            this.validMoves = allValidPieceMoves;
             chessBoard.allValidMoves.addAll(allValidPieceMoves);
             if(allValidPieceMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
                 return true;
