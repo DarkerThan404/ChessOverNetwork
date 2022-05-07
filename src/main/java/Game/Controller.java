@@ -80,55 +80,39 @@ public class Controller {
         }
         return true;
     }
-
+    /// This method assumes that input values are always correct
     public static ChessBoard PerformMove(ChessBoard board, String from, String to, boolean whiteTurn){
         var newBoard = board;
         var IntsFrom = CoordinateConvertor.StringToIntCoord(from);
         var IntsTo = CoordinateConvertor.StringToIntCoord(to);
+        var targetSquare = newBoard.board[IntsFrom[1]][IntsFrom[0]];
+        assert (targetSquare != null);
         if(whiteTurn){
-            var targetSquare = newBoard.board[IntsFrom[1]][IntsFrom[0]];
-            if(targetSquare != null){
-                var movingPiece = targetSquare.getPiece();
-                if(movingPiece instanceof Pawn){
-                    if(IntsFrom[1] == 3 && IntsTo[1] == 2 && IntsFrom[0] != IntsTo[0] && newBoard.board[IntsTo[1]][IntsTo[0]] == null ){
-                        movingPiece.moveCount++;
-                        var EnPassableSquare = newBoard.board[IntsTo[1]+1][IntsTo[0]];
-                        if(EnPassableSquare == null){
-                            System.out.println("Enpassable square is null");
-                        } else {
-                            newBoard.board[IntsTo[1]+1][IntsTo[0]] = null;
-                        }
-                    }
-                    System.out.println("Is intance of pawn");
+            var movingPiece = targetSquare.getPiece();
+            if(movingPiece instanceof Pawn){ //en passent
+                if(IntsFrom[1] == 3 && IntsTo[1] == 2 && IntsFrom[0] != IntsTo[0] && newBoard.board[IntsTo[1]][IntsTo[0]] == null ){
+                    var EnPassableSquare = newBoard.board[IntsTo[1]+1][IntsTo[0]];
+                    assert (EnPassableSquare != null);
+                    newBoard.board[IntsTo[1]+1][IntsTo[0]] = null;
                 }
+                System.out.println("Is intance of pawn");
             }
-            board.coordLastPieceMoved = IntsTo;
-            newBoard.board[IntsTo[1]][IntsTo[0]] = targetSquare;
-            newBoard.board[IntsFrom[1]][IntsFrom[0]] = null;
-            targetSquare.getPiece().moveCount++;
 
         } else {
-            var targetSquare = board.board[IntsFrom[1]][IntsFrom[0]];
-            if(targetSquare != null){
-                var movingPiece = targetSquare.getPiece();
-                if(movingPiece instanceof Pawn){
-                    if(IntsFrom[1] == 4 && IntsTo[1] == 5 && IntsFrom[0] != IntsTo[0] && newBoard.board[IntsTo[1]][IntsTo[0]] == null ){
-                        movingPiece.moveCount++;
-                        var EnPassableSquare = newBoard.board[IntsTo[1]-1][IntsTo[0]];
-                        if(EnPassableSquare == null){
-                            System.out.println("Enpassable square is null");
-                        } else {
-                            newBoard.board[IntsTo[1]-1][IntsTo[0]] = null;
-                        }
-                    }
-                    System.out.println("Is intance of pawn");
+            var movingPiece = targetSquare.getPiece();
+            if(movingPiece instanceof Pawn){
+                if(IntsFrom[1] == 4 && IntsTo[1] == 5 && IntsFrom[0] != IntsTo[0] && newBoard.board[IntsTo[1]][IntsTo[0]] == null ){
+                    var EnPassableSquare = newBoard.board[IntsTo[1]-1][IntsTo[0]];
+                    assert (EnPassableSquare != null);
+                    newBoard.board[IntsTo[1]-1][IntsTo[0]] = null;
                 }
+                System.out.println("Is intance of pawn");
             }
-            board.coordLastPieceMoved = IntsTo;
-            newBoard.board[IntsTo[1]][IntsTo[0]] = targetSquare;
-            newBoard.board[IntsFrom[1]][IntsFrom[0]] = null;
-            targetSquare.getPiece().moveCount++;
         }
+        board.coordLastPieceMoved = IntsTo;
+        newBoard.board[IntsTo[1]][IntsTo[0]] = targetSquare;
+        newBoard.board[IntsFrom[1]][IntsFrom[0]] = null;
+        targetSquare.getPiece().moveCount++;
         return newBoard;
     }
 }
