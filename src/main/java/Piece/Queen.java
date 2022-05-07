@@ -34,9 +34,9 @@ public class Queen extends Piece{
 
         int[] directionXList = new int[]{1,0,-1,0,1,-1,1,-1};
         int[] directionYList = new int[]{0,1,0,-1,1,1,-1,-1};
-        int directionSize = 8;
+        int directionListSize = 8;
         var board = chessBoard.board;
-        for(int directionIndex = 0; directionIndex < directionSize; directionIndex++){
+        for(int directionIndex = 0; directionIndex < directionListSize; directionIndex++){
             for(int step = 1 ; step < 8; step++){
                 int targetX = xFrom + directionXList[directionIndex] * step;
                 int targetY = yFrom + directionYList[directionIndex] * step;

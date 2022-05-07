@@ -25,11 +25,14 @@ public class King extends Piece{
 
     @Override
     public boolean IsValidMove(ChessBoard chessBoard, Integer[] from, Integer[] to, boolean whiteTurn) {
+        if(whiteTurn != this.player.isWhiteSide()){
+            System.out.println("You cant play with this piece!");
+            return false;
+        }
         this.validMoves = new ArrayList<>();
         int xFrom = from[0];
         int yFrom = from[1];
-        int xTo = to[0];
-        int yTo = to[1];
+
         var board = chessBoard.board;
         for(int x = -1; x < 2;x++){
             for(int y = -1; y < 2; y++){
@@ -51,10 +54,7 @@ public class King extends Piece{
                 }
             }
         }
-        System.out.println("King moves:");
-        for(String move: validMoves){
-            System.out.println(move);
-        }
+
         chessBoard.allValidMoves.addAll(this.validMoves);
         if(this.validMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
             return true;
