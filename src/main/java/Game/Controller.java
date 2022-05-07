@@ -53,13 +53,16 @@ public class Controller {
         if(movingPiece != null){
             if(movingPiece.getPiece().IsValidMove(chessBoard, fromCoord, toCoord, whiteTurn)){
                 System.out.println("Piece can move in that way");
+                return true;
             } else {
                 System.out.println("Piece cannot move in that way");
                 return false;
             }
+        } else {
+            System.out.println("Trying to move non-existing piece! Try again!");
         }
 
-        return true;
+        return false;
     }
 
     private static boolean CoordInBounds(String coord){
@@ -84,13 +87,12 @@ public class Controller {
         if(whiteTurn){
             var movingPiece = board.board[IntsFrom[1]][IntsFrom[0]];
             System.out.println("From x:" + IntsFrom[0] + ", y:" + IntsFrom[1]);
-            var back = CoordinateConvertor.IntToStringCoord(IntsFrom);
-            System.out.println(back);
-            System.out.println(CoordinateConvertor.IntToStringCoord(IntsTo));
-            movingPiece.getPiece().draw();
+            System.out.println("To x:" + IntsTo[0] + ", y:" + IntsTo[1]);
+            //var back = CoordinateConvertor.IntToStringCoord(IntsFrom);
+
             newBoard.board[IntsTo[1]][IntsTo[0]] = movingPiece;
             newBoard.board[IntsFrom[1]][IntsFrom[0]] = null;
-            newBoard.draw();
+
         }
         return newBoard;
     }
