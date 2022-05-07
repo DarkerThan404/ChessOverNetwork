@@ -56,4 +56,30 @@ public class Knight extends Piece{
             return false;
         }
     }
+
+    @Override
+    public List<String> getValidMoves(ChessBoard chessBoard, String from) {
+        var result = new ArrayList<String>();
+        var IntCoord = CoordinateConvertor.StringToIntCoord(from);
+        int xFrom = IntCoord[0];
+        int yFrom = IntCoord[1];
+
+        int[] directionXList = new int[]{2,2,-2,-2,1,1,-1,-1};
+        int[] directionYList = new int[]{1,-1,1,-1,2,-2,2,-2};
+        int directionListSize = 8;
+        var board = chessBoard.board;
+        for(int directionIndex = 0; directionIndex < directionListSize; directionIndex++){
+            int xTarget = xFrom + directionXList[directionIndex];
+            int yTarget = yFrom + directionYList[directionIndex];
+            if(xTarget < 8 && yTarget < 8 && xTarget >= 0 && yTarget >= 0){
+                var square = board[yTarget][xTarget];
+                if(square == null){
+                    result.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xTarget, yTarget}));
+                } else if(square.getPiece().player.isWhiteSide() != this.player.isWhiteSide()){
+                    result.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xTarget, yTarget}));
+                }
+            }
+        }
+        return result;
+    }
 }

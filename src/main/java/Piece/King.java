@@ -45,11 +45,7 @@ public class King extends Piece{
                             this.validMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xTarget, yTarget}));
                         } else if (targetSquare.getPiece().player.isWhiteSide() != whiteTurn){
                             this.validMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xTarget, yTarget}));
-                        } else {
-                            //idk should not be possible
                         }
-                    } else {
-                       //do nothing
                     }
                 }
             }
@@ -61,6 +57,11 @@ public class King extends Piece{
         } else {
             return false;
         }
+    }
+
+    @Override
+    public List<String> getValidMoves(ChessBoard chessBoard, String from) {
+        return null;
     }
 
 }

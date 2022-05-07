@@ -33,7 +33,7 @@ public class Game {
                         board.draw();
                         whiteTurn = !whiteTurn;
                     } else {
-                        System.out.println("Is not valid input");
+                        System.out.println("Invalid input!");
                     }
                 }
             }

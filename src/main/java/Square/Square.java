@@ -1,6 +1,9 @@
 package Square;
 
+import Game.ChessBoard;
 import Piece.Piece;
+
+import java.util.List;
 
 public class Square {
     public String pos;
@@ -14,6 +17,9 @@ public class Square {
 
     public Piece getPiece(){
         return piece;
+    }
+    public List<String> getValidMoves(ChessBoard chessBoard){
+        return null;
     }
 
 }
