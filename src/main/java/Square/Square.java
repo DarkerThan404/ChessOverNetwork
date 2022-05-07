@@ -3,12 +3,11 @@ package Square;
 import Piece.Piece;
 
 public class Square {
-    //private int x,y;
+    public String pos;
     private Piece piece;
 
-    public Square(/*int x, int y,*/ Piece piece){
-        //this.x = x;
-        //this.y = y;
+    public Square(String pos, Piece piece){
+        this.pos = pos;
         this.piece = piece;
     }
 
