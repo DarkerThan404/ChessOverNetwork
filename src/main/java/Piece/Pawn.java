@@ -31,7 +31,7 @@ public class Pawn extends Piece{
         Integer yFrom = from[1];
         var board = chessBoard.board;
         if(whiteTurn != this.player.isWhiteSide()){
-            System.out.println("Incorrect color to move from");
+            System.out.println("You cant play with this piece!");
             return false;
         }
         if(this.player.isWhiteSide() == true){

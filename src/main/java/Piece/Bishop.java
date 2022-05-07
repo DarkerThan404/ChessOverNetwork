@@ -25,6 +25,10 @@ public class Bishop extends Piece{
 
     @Override
     public boolean IsValidMove(ChessBoard chessBoard, Integer[] from, Integer[] to, boolean whiteTurn) {
+        if(whiteTurn != this.player.isWhiteSide()){
+            System.out.println("You cant play with this piece!");
+            return false;
+        }
         this.validMoves = new ArrayList<>();
         int xFrom = from[0];
         int yFrom = from[1];
@@ -57,11 +61,8 @@ public class Bishop extends Piece{
             }
         }
         chessBoard.allValidMoves.addAll(this.validMoves);
-        for(String move : this.validMoves){
-            System.out.println(move);
-        }
+
         if(this.validMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
-            System.out.println("its possible to move to");
             return true;
         } else {
             return false;
