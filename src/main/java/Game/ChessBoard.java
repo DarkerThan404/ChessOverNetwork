@@ -12,10 +12,14 @@ public class ChessBoard {
 
     public Integer[] coordLastPieceMoved;
     public List<String> allValidMoves;
+    public List<Square> whitePieces;
+    public List<Square> blackPieces;
     public ChessBoard(Square[][] board, int size){
         this.size = size;
         this.board = board;
         allValidMoves = new ArrayList<>();
+        whitePieces = new ArrayList<>();
+        blackPieces = new ArrayList<>();
     }
 
     public void ResetMoves(){

@@ -136,7 +136,7 @@ public class Pawn extends Piece{
             }
 
             if(yFrom == 4){ //en passent
-                //System.out.println("En passable");
+
                 var lastMovedPos = chessBoard.coordLastPieceMoved;
 
                 var lastMovedSquare = board[lastMovedPos[1]][lastMovedPos[0]];
@@ -145,7 +145,7 @@ public class Pawn extends Piece{
                     var lastMovedPiece = lastMovedSquare.getPiece();
                     if(lastMovedPiece instanceof Pawn && lastMovedPiece.moveCount == 1){
                         if(lastMovedPos[1] == yFrom){
-                            //System.out.println("Should be executed");
+
                             if(lastMovedPos[0] == xFrom + 1){
                                 allValidPieceMoves.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom + 1, yFrom + 1}));
                             }
@@ -156,10 +156,6 @@ public class Pawn extends Piece{
                         }
                     }
                 }
-            }
-            //System.out.println("All possible moves");
-            for(String move : allValidPieceMoves){
-                System.out.println(move);
             }
             this.validMoves = allValidPieceMoves;
             chessBoard.allValidMoves.addAll(allValidPieceMoves);
