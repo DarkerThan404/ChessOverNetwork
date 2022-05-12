@@ -71,13 +71,7 @@ public class Controller {
 
         var movingPiece = chessBoard.board[fromCoord[1]][fromCoord[0]];
         if(movingPiece != null){
-            if(movingPiece.getPiece().IsValidMove(chessBoard, fromCoord, toCoord, whiteTurn)){
-                //System.out.println("Piece can move in that way");
-                return true;
-            } else {
-                System.out.println("Piece cannot move in that way");
-                return false;
-            }
+            return (movingPiece.getPiece().IsValidMove(chessBoard, fromCoord, toCoord, whiteTurn));
         } else {
             System.out.println("Trying to move non-existing piece! Try again!");
         }
@@ -93,7 +87,7 @@ public class Controller {
         var coords = CoordinateConvertor.StringToIntCoord(coord);
         var x = coords[0];
         var y = coords[1];
-        //System.out.println("X: " + x + ", Y:" + y);
+
         if(x > 7 || x < 0 || y > 7 || y < 0){
             return false;
         }
@@ -106,19 +100,20 @@ public class Controller {
         var IntsTo = CoordinateConvertor.StringToIntCoord(to);
         var targetSquare = newBoard.board[IntsFrom[1]][IntsFrom[0]];
         assert (targetSquare != null);
+        System.out.println(" square X: " + IntsFrom[0] + " Y: " + IntsFrom[1]);
         if(whiteTurn){
+            System.out.println("Omeaglul");
+            if(targetSquare == null) System.out.println("Is null");
             var movingPiece = targetSquare.getPiece();
             if(movingPiece instanceof Pawn){ //en passent
                 if(IntsFrom[1] == 3 && IntsTo[1] == 2 && IntsFrom[0] != IntsTo[0] && newBoard.board[IntsTo[1]][IntsTo[0]] == null ){
                     var EnPassableSquare = newBoard.board[IntsTo[1]+1][IntsTo[0]];
                     assert (EnPassableSquare != null);
                     newBoard.board[IntsTo[1]+1][IntsTo[0]] = null;
-                    var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[1]+1,IntsTo[0]});
+                    var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[0],IntsTo[1]+1});
                     int index = newBoard.blackPieces.indexOf(stringPos);
                     newBoard.blackPieces.remove(index);
                 }
-
-                System.out.println("Is intance of pawn");
             }
 
         } else {
@@ -128,31 +123,21 @@ public class Controller {
                     var EnPassableSquare = newBoard.board[IntsTo[1]-1][IntsTo[0]];
                     assert (EnPassableSquare != null);
                     newBoard.board[IntsTo[1]-1][IntsTo[0]] = null;
-                    var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[1]-1,IntsTo[0]});
+                    var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[0],IntsTo[1]-1});
                     int index = newBoard.blackPieces.indexOf(stringPos);
                     newBoard.blackPieces.remove(index);
                 }
-
-                System.out.println("Is intance of pawn");
             }
         }
         board.coordLastPieceMoved = IntsTo;
         newBoard.board[IntsTo[1]][IntsTo[0]] = targetSquare;
+        targetSquare.pos = CoordinateConvertor.IntToStringCoord(IntsTo);
         newBoard.board[IntsFrom[1]][IntsFrom[0]] = null;
         targetSquare.getPiece().moveCount++;
-        if(whiteTurn){
-            int index = newBoard.whitePieces.indexOf(from);
-            newBoard.whitePieces.remove(index);
-            newBoard.whitePieces.add(to);
-
-        } else {
-            int index = newBoard.blackPieces.indexOf(from);
-            newBoard.blackPieces.remove(index);
-            newBoard.blackPieces.add(to);
-        }
+        newBoard.UpdatePieceLists(from, to, whiteTurn);
         return newBoard;
     }
-
+    // this assumes that piece can make that move
     public static boolean wouldBeKingInDanger(ChessBoard chessBoard, String from, String to, boolean isWhiteTurn){
         var IntFrom = CoordinateConvertor.StringToIntCoord(from);
         var IntTo = CoordinateConvertor.StringToIntCoord(to);
@@ -160,11 +145,12 @@ public class Controller {
 
         chessBoard.board[IntFrom[1]][IntFrom[0]] = null;
         chessBoard.board[IntTo[1]][IntTo[0]] = temp;
+        temp.pos = to;
+        chessBoard.UpdatePieceLists(from, to, isWhiteTurn);
         Square kingSquare = null;
         if(isWhiteTurn){
-
-            for(String pos : chessBoard.whitePieces){
-                var coords = CoordinateConvertor.StringToIntCoord(pos);
+            for(String wpos : chessBoard.whitePieces){
+                var coords = CoordinateConvertor.StringToIntCoord(wpos);
                 var square = chessBoard.board[coords[1]][coords[0]];
                 assert (square != null);
                 if(square.getPiece() instanceof King){
@@ -191,9 +177,22 @@ public class Controller {
             }
 
             if(chessBoard.IsCheck(kingSquare.pos, isWhiteTurn)){
-
+                return true;
+            } else {
+                return false;
             }
         }
-        return false;
+    }
+
+    public static ChessBoard UndoMove(ChessBoard chessBoard, String from, String to){
+        var IntFrom = CoordinateConvertor.StringToIntCoord(from);
+        var IntTo = CoordinateConvertor.StringToIntCoord(to);
+        var temp = chessBoard.board[IntTo[1]][IntTo[0]];
+
+        chessBoard.board[IntTo[1]][IntTo[0]] = null;
+        chessBoard.board[IntFrom[1]][IntFrom[0]] = temp;
+        temp.pos = from;
+        chessBoard.UpdatePieceLists(to, from, temp.getPiece().player.isWhiteSide());
+        return chessBoard;
     }
 }

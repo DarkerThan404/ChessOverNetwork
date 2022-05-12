@@ -4,7 +4,6 @@ import Game.ChessBoard;
 import Game.CoordinateConvertor;
 import Player.Player;
 
-import java.lang.reflect.AnnotatedArrayType;
 import java.util.ArrayList;
 import java.util.List;
 

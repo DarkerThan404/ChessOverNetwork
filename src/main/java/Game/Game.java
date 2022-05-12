@@ -21,6 +21,14 @@ public class Game {
         boolean whiteTurn = true;
         try {
             while(true) {
+                if(board.IsKingInCheck(whiteTurn)){
+                    if(whiteTurn){
+                        System.out.println("White king is in check!");
+                    } else {
+                        System.out.println("Black king is in check!");
+                    }
+                }
+
                 var rawInput = getInput().split("\s+");
                 if (rawInput.length == 1) {
                     if (rawInput[0].equals("help")) {
@@ -28,12 +36,19 @@ public class Game {
                     }
                 } else if (rawInput.length == 2) {
                     if (Controller.IsValidMove(board,rawInput[0],rawInput[1],whiteTurn)) {
-                        System.out.println("Is valid coord");
-                        board = Controller.PerformMove(board, rawInput[0], rawInput[1], whiteTurn);
+                        if(Controller.wouldBeKingInDanger(board,rawInput[0], rawInput[1],whiteTurn)){
+                            Controller.UndoMove(board,rawInput[0],rawInput[1]);
+                            System.out.println("King would be in check!");
+                        } else {
+                            //we have to undo anyways since we have single copy of a board
+                            Controller.UndoMove(board,rawInput[0],rawInput[1]);
+                            board = Controller.PerformMove(board, rawInput[0], rawInput[1], whiteTurn);
+                            whiteTurn = !whiteTurn;
+                        }
                         board.draw();
-                        whiteTurn = !whiteTurn;
+
                     } else {
-                        System.out.println("Invalid input!");
+                        System.out.println("Unsupported format! Perhaps piece cannot move that way");
                     }
                 }
             }

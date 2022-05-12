@@ -19,7 +19,6 @@ public class Square {
         return piece;
     }
     public List<String> getValidMoves(ChessBoard chessBoard){
-        return null;
+        return piece.getValidMoves(chessBoard, pos);
     }
-
 }

@@ -32,6 +32,9 @@ public class Pawn extends Piece{
         }
 
         this.validMoves = this.getValidMoves(chessBoard, CoordinateConvertor.IntToStringCoord(from));
+        for(String move : validMoves){
+            System.out.println(move);
+        }
         chessBoard.allValidMoves.addAll(validMoves);
         if(validMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
             return true;
@@ -104,7 +107,7 @@ public class Pawn extends Piece{
                 }
             }
         } else {
-            System.out.println("Black side is playing");
+            //System.out.println("Black side is playing");
             if(this.moveCount == 0 && board[yFrom + 1][xFrom] == null && board[yFrom + 2][xFrom] == null){ //its first move
 
                 var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom , (yFrom + 2)});

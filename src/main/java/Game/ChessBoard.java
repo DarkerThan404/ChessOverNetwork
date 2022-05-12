@@ -1,6 +1,6 @@
 package Game;
 
-import Piece.Piece;
+import Piece.King;
 import Square.Square;
 
 import java.util.ArrayList;
@@ -51,6 +51,19 @@ public class ChessBoard {
         }
         return false;
     }
+
+    public void UpdatePieceLists(String from, String to, boolean isWhiteTurn){
+        if(isWhiteTurn){
+            int index = this.whitePieces.indexOf(from);
+            this.whitePieces.remove(index);
+            this.whitePieces.add(to);
+
+        } else {
+            int index = this.blackPieces.indexOf(from);
+            this.blackPieces.remove(index);
+            this.blackPieces.add(to);
+        }
+    }
     public void draw(){
         for(int x = 0; x < size; x++){
             System.out.print((8 - x  )% 9 + " ");
@@ -65,5 +78,30 @@ public class ChessBoard {
             System.out.println();
         }
         System.out.println("   a  b  c  d  e  f  g  h");
+    }
+
+    public boolean IsKingInCheck(boolean isWhiteSide){
+        var targetPos = "";
+        if(isWhiteSide){
+            for(String pos : whitePieces){
+                var coord = CoordinateConvertor.StringToIntCoord(pos);
+                var targetSquare = board[coord[1]][coord[0]];
+                assert (targetSquare != null);
+                if(targetSquare.getPiece() instanceof King){
+                    targetPos = pos;
+                    break;
+                }
+            }
+        } else {
+            for(String pos : blackPieces){
+                var coord = CoordinateConvertor.StringToIntCoord(pos);
+                var targetSquare = board[coord[1]][coord[0]];
+                assert (targetSquare != null);
+                if(targetSquare.getPiece() instanceof King){
+                    targetPos = pos;
+                }
+            }
+        }
+        return this.IsCheck(targetPos, isWhiteSide);
     }
 }
