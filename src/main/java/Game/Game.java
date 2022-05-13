@@ -44,7 +44,6 @@ public class Game {
                         board = Controller.PerformMove(board, rawInput[0], rawInput[1], whiteTurn);
                         whiteTurn = !whiteTurn;
                         board.draw();
-
                     } else {
                         System.out.println("Unsupported format! Perhaps piece cannot move that way");
                     }

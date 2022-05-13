@@ -205,7 +205,7 @@ public class ChessBoard {
         var IntCoord = CoordinateConvertor.StringToIntCoord(pos);
         var KingSquare = board[IntCoord[1]][IntCoord[0]];
         for(String move : KingSquare.getValidMoves(this)){
-            if(!IsCheck(move,isWhiteSide)) {
+            if(!wouldBeKingInDanger(pos, move, isWhiteSide)) {
                 System.out.println(move);
                 return false;
             }
@@ -214,7 +214,6 @@ public class ChessBoard {
         //check if friendly piece can block check
 
         //check if attacking piece can be taken
-
         return true;
     }
 
