@@ -206,7 +206,6 @@ public class ChessBoard {
         var KingSquare = board[IntCoord[1]][IntCoord[0]];
         for(String move : KingSquare.getValidMoves(this)){
             if(!wouldBeKingInDanger(pos, move, isWhiteSide)) {
-                System.out.println(move);
                 return false;
             }
         }
@@ -239,6 +238,36 @@ public class ChessBoard {
                 if(targetSquare.getPiece() instanceof King){
                     result = pos;
                     break;
+                }
+            }
+        }
+        return result;
+    }
+
+    private List<String> getAttackingPiece(String attackedPos, boolean forWhiteSide){
+        var result = new ArrayList<String>();
+        if(forWhiteSide){
+            for(String bPos : blackPieces){
+                var coord = CoordinateConvertor.StringToIntCoord(bPos);
+                var targetSquare = board[coord[1]][coord[0]];
+                assert (targetSquare != null);
+                List<String> pieceMoves = targetSquare.getValidMoves(this);
+                for(String pieceMove : pieceMoves){
+                    if(pieceMove.equals(attackedPos)){
+                        result.add(bPos);
+                    }
+                }
+            }
+        } else {
+            for(String wPos : whitePieces){
+                var coord = CoordinateConvertor.StringToIntCoord(wPos);
+                var targetSquare = board[coord[1]][coord[0]];
+                assert (targetSquare != null);
+                List<String> pieceMoves = targetSquare.getValidMoves(this);
+                for(String pieceMove : pieceMoves){
+                    if(pieceMove.equals(attackedPos)){
+                        result.add(wPos);
+                    }
                 }
             }
         }
