@@ -71,7 +71,12 @@ public class Controller {
 
         var movingPiece = chessBoard.board[fromCoord[1]][fromCoord[0]];
         if(movingPiece != null){
-            return (movingPiece.getPiece().IsValidMove(chessBoard, fromCoord, toCoord, whiteTurn));
+            var isPosibleLogicalMove = movingPiece.getPiece().IsValidMove(chessBoard, fromCoord, toCoord, whiteTurn);
+            if(!isPosibleLogicalMove) { System.out.println("Piece doesnt move that way"); return false; }
+            if(chessBoard.wouldBeKingInDanger(from, to, whiteTurn)){
+                System.out.println("King would be in danger. Cannot move that piece!"); return false;
+            }
+            return true;
         } else {
             System.out.println("Trying to move non-existing piece! Try again!");
         }
@@ -138,68 +143,7 @@ public class Controller {
         return newBoard;
     }
 
-    // this assumes that piece can make that move
-    public static boolean wouldBeKingInDanger(ChessBoard chessBoard, String from, String to, boolean isWhiteTurn){
-        var IntFrom = CoordinateConvertor.StringToIntCoord(from);
-        var IntTo = CoordinateConvertor.StringToIntCoord(to);
-        var temp = chessBoard.board[IntFrom[1]][IntFrom[0]];
-        chessBoard.lastPieceTaken = chessBoard.board[IntTo[1]][IntTo[0]];
-        if(chessBoard.lastPieceTaken != null){
-            chessBoard.RemovePieceFromList(chessBoard.lastPieceTaken.pos, chessBoard.lastPieceTaken.getPiece().player.isWhiteSide());
-        }
-        chessBoard.board[IntFrom[1]][IntFrom[0]] = null;
-        chessBoard.board[IntTo[1]][IntTo[0]] = temp;
-        temp.pos = to;
-        chessBoard.UpdatePieceLists(from, to, isWhiteTurn);
-        Square kingSquare = null;
-        if(isWhiteTurn){
-            for(String wpos : chessBoard.whitePieces){
-                var coords = CoordinateConvertor.StringToIntCoord(wpos);
-                var square = chessBoard.board[coords[1]][coords[0]];
-                assert (square != null);
-                if(square.getPiece() instanceof King){
-                    kingSquare = square;
-                    break;
-                }
-            }
 
-            if(chessBoard.IsCheck(kingSquare.pos, isWhiteTurn)){
-                return true;
-            } else {
-                return false;
-            }
 
-        } else {
-            for(String pos : chessBoard.blackPieces){
-                var coords = CoordinateConvertor.StringToIntCoord(pos);
-                var square = chessBoard.board[coords[1]][coords[0]];
-                assert (square != null);
-                if(square.getPiece() instanceof King){
-                    kingSquare = square;
-                    break;
-                }
-            }
 
-            if(chessBoard.IsCheck(kingSquare.pos, isWhiteTurn)){
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    public static ChessBoard UndoMove(ChessBoard chessBoard, String from, String to){
-        var IntFrom = CoordinateConvertor.StringToIntCoord(from);
-        var IntTo = CoordinateConvertor.StringToIntCoord(to);
-        var temp = chessBoard.board[IntTo[1]][IntTo[0]];
-
-        chessBoard.board[IntTo[1]][IntTo[0]] = chessBoard.lastPieceTaken;
-        chessBoard.board[IntFrom[1]][IntFrom[0]] = temp;
-        temp.pos = from;
-        chessBoard.UpdatePieceLists(to, from, temp.getPiece().player.isWhiteSide());
-        if(chessBoard.lastPieceTaken != null){
-            chessBoard.AddPieceToList(chessBoard.lastPieceTaken.pos, chessBoard.lastPieceTaken.getPiece().player.isWhiteSide());
-        }
-        return chessBoard;
-    }
 }

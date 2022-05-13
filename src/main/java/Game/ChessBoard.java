@@ -32,7 +32,7 @@ public class ChessBoard {
         if(isWhiteSide){
             for(String bpos : blackPieces){
                 var bCoord = CoordinateConvertor.StringToIntCoord(bpos);
-                System.out.println(bpos);
+                //System.out.println(bpos);
                 var availableMoves = board[bCoord[1]][bCoord[0]].getValidMoves(this);
                 for(String move :availableMoves){
                     if(pos.equals(move)){
@@ -128,6 +128,73 @@ public class ChessBoard {
         return this.IsCheck(targetPos, isWhiteSide);
     }
 
+    // this assumes that piece can make that move
+    public boolean wouldBeKingInDanger( String from, String to, boolean isWhiteTurn){
+        var result = false;
+        var IntFrom = CoordinateConvertor.StringToIntCoord(from);
+        var IntTo = CoordinateConvertor.StringToIntCoord(to);
+        var temp = this.board[IntFrom[1]][IntFrom[0]];
+        this.lastPieceTaken = this.board[IntTo[1]][IntTo[0]];
+        if(this.lastPieceTaken != null){
+            this.RemovePieceFromList(this.lastPieceTaken.pos, this.lastPieceTaken.getPiece().player.isWhiteSide());
+        }
+        this.board[IntFrom[1]][IntFrom[0]] = null;
+        this.board[IntTo[1]][IntTo[0]] = temp;
+        temp.pos = to;
+        this.UpdatePieceLists(from, to, isWhiteTurn);
+        Square kingSquare = null;
+        if(isWhiteTurn){
+            for(String wpos : this.whitePieces){
+                var coords = CoordinateConvertor.StringToIntCoord(wpos);
+                var square = this.board[coords[1]][coords[0]];
+                assert (square != null);
+                if(square.getPiece() instanceof King){
+                    kingSquare = square;
+                    break;
+                }
+            }
+
+            if(this.IsCheck(kingSquare.pos, isWhiteTurn)){
+                result = true;
+            } else {
+                result = false;
+            }
+
+        } else {
+            for(String pos : this.blackPieces){
+                var coords = CoordinateConvertor.StringToIntCoord(pos);
+                var square = this.board[coords[1]][coords[0]];
+                assert (square != null);
+                if(square.getPiece() instanceof King){
+                    kingSquare = square;
+                    break;
+                }
+            }
+
+            if(this.IsCheck(kingSquare.pos, isWhiteTurn)){
+                result = true;
+            } else {
+                result = false;
+            }
+        }
+        UndoMove(from, to);
+        return result;
+    }
+
+    public void UndoMove( String from, String to){
+        var IntFrom = CoordinateConvertor.StringToIntCoord(from);
+        var IntTo = CoordinateConvertor.StringToIntCoord(to);
+        var temp = this.board[IntTo[1]][IntTo[0]];
+
+        this.board[IntTo[1]][IntTo[0]] = this.lastPieceTaken;
+        this.board[IntFrom[1]][IntFrom[0]] = temp;
+        temp.pos = from;
+        this.UpdatePieceLists(to, from, temp.getPiece().player.isWhiteSide());
+        if(this.lastPieceTaken != null){
+            this.AddPieceToList(this.lastPieceTaken.pos, this.lastPieceTaken.getPiece().player.isWhiteSide());
+        }
+    }
+
     public boolean IsCheckMate(boolean isWhiteSide){
         //check if the king is in check
         if(!IsKingInCheck(isWhiteSide)){
@@ -138,14 +205,20 @@ public class ChessBoard {
         var IntCoord = CoordinateConvertor.StringToIntCoord(pos);
         var KingSquare = board[IntCoord[1]][IntCoord[0]];
         for(String move : KingSquare.getValidMoves(this)){
-            if(!IsCheck(move,isWhiteSide)) return false;
+            if(!IsCheck(move,isWhiteSide)) {
+                System.out.println(move);
+                return false;
+            }
         }
 
         //check if friendly piece can block check
 
         //check if attacking piece can be taken
-        return false;
+
+        return true;
     }
+
+
 
     private String getKingPosition(boolean isWhiteSide){
         var result = "";
