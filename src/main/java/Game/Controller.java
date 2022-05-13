@@ -143,7 +143,10 @@ public class Controller {
         var IntFrom = CoordinateConvertor.StringToIntCoord(from);
         var IntTo = CoordinateConvertor.StringToIntCoord(to);
         var temp = chessBoard.board[IntFrom[1]][IntFrom[0]];
-
+        chessBoard.lastPieceTaken = chessBoard.board[IntTo[1]][IntTo[0]];
+        if(chessBoard.lastPieceTaken != null){
+            chessBoard.RemovePieceFromList(chessBoard.lastPieceTaken.pos, chessBoard.lastPieceTaken.getPiece().player.isWhiteSide());
+        }
         chessBoard.board[IntFrom[1]][IntFrom[0]] = null;
         chessBoard.board[IntTo[1]][IntTo[0]] = temp;
         temp.pos = to;
@@ -190,10 +193,13 @@ public class Controller {
         var IntTo = CoordinateConvertor.StringToIntCoord(to);
         var temp = chessBoard.board[IntTo[1]][IntTo[0]];
 
-        chessBoard.board[IntTo[1]][IntTo[0]] = null;
+        chessBoard.board[IntTo[1]][IntTo[0]] = chessBoard.lastPieceTaken;
         chessBoard.board[IntFrom[1]][IntFrom[0]] = temp;
         temp.pos = from;
         chessBoard.UpdatePieceLists(to, from, temp.getPiece().player.isWhiteSide());
+        if(chessBoard.lastPieceTaken != null){
+            chessBoard.AddPieceToList(chessBoard.lastPieceTaken.pos, chessBoard.lastPieceTaken.getPiece().player.isWhiteSide());
+        }
         return chessBoard;
     }
 }

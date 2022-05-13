@@ -11,6 +11,7 @@ public class ChessBoard {
     public Square[][] board;
 
     public Integer[] coordLastPieceMoved;
+    public Square lastPieceTaken;
     public List<String> allValidMoves;
     public List<String> whitePieces;
     public List<String> blackPieces;
@@ -31,6 +32,7 @@ public class ChessBoard {
         if(isWhiteSide){
             for(String bpos : blackPieces){
                 var bCoord = CoordinateConvertor.StringToIntCoord(bpos);
+                System.out.println(bpos);
                 var availableMoves = board[bCoord[1]][bCoord[0]].getValidMoves(this);
                 for(String move :availableMoves){
                     if(pos.equals(move)){
@@ -64,6 +66,27 @@ public class ChessBoard {
             this.blackPieces.add(to);
         }
     }
+
+    public void RemovePieceFromList(String target, boolean isWhiteTurn){
+        if(isWhiteTurn){
+            int index = this.whitePieces.indexOf(target);
+            assert (index != -1);
+            this.whitePieces.remove(index);
+        } else {
+            int index = this.blackPieces.indexOf(target);
+            assert (index != 1);
+            this.blackPieces.remove(index);
+        }
+    }
+
+    public void AddPieceToList(String target, boolean isWhiteTurn){
+        if(isWhiteTurn){
+            this.whitePieces.add(target);
+        } else {
+            this.blackPieces.add(target);
+        }
+    }
+
     public void draw(){
         for(int x = 0; x < size; x++){
             System.out.print((8 - x  )% 9 + " ");
