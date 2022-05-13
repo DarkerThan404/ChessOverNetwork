@@ -137,6 +137,7 @@ public class Controller {
         newBoard.UpdatePieceLists(from, to, whiteTurn);
         return newBoard;
     }
+
     // this assumes that piece can make that move
     public static boolean wouldBeKingInDanger(ChessBoard chessBoard, String from, String to, boolean isWhiteTurn){
         var IntFrom = CoordinateConvertor.StringToIntCoord(from);

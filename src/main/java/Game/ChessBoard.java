@@ -104,4 +104,49 @@ public class ChessBoard {
         }
         return this.IsCheck(targetPos, isWhiteSide);
     }
+
+    public boolean IsCheckMate(boolean isWhiteSide){
+        //check if the king is in check
+        if(!IsKingInCheck(isWhiteSide)){
+            return false;
+        }
+        //check if king can move out of check
+        String pos = getKingPosition(isWhiteSide);
+        var IntCoord = CoordinateConvertor.StringToIntCoord(pos);
+        var KingSquare = board[IntCoord[1]][IntCoord[0]];
+        for(String move : KingSquare.getValidMoves(this)){
+            if(!IsCheck(move,isWhiteSide)) return false;
+        }
+
+        //check if friendly piece can block check
+
+        //check if attacking piece can be taken
+        return false;
+    }
+
+    private String getKingPosition(boolean isWhiteSide){
+        var result = "";
+        if(isWhiteSide){
+            for(String pos : whitePieces){
+                var coord = CoordinateConvertor.StringToIntCoord(pos);
+                var targetSquare = board[coord[1]][coord[0]];
+                assert (targetSquare != null);
+                if(targetSquare.getPiece() instanceof King){
+                    result = pos;
+                    break;
+                }
+            }
+        } else {
+            for(String pos : blackPieces){
+                var coord = CoordinateConvertor.StringToIntCoord(pos);
+                var targetSquare = board[coord[1]][coord[0]];
+                assert (targetSquare != null);
+                if(targetSquare.getPiece() instanceof King){
+                    result = pos;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
 }
