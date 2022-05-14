@@ -105,9 +105,9 @@ public class Controller {
         var IntsTo = CoordinateConvertor.StringToIntCoord(to);
         var targetSquare = newBoard.board[IntsFrom[1]][IntsFrom[0]];
         assert (targetSquare != null);
-        System.out.println(" square X: " + IntsFrom[0] + " Y: " + IntsFrom[1]);
+       // System.out.println(" square X: " + IntsFrom[0] + " Y: " + IntsFrom[1]);
         if(whiteTurn){
-            System.out.println("Omeaglul");
+            //System.out.println("Omeaglul");
             if(targetSquare == null) System.out.println("Is null");
             var movingPiece = targetSquare.getPiece();
             if(movingPiece instanceof Pawn){ //en passent
