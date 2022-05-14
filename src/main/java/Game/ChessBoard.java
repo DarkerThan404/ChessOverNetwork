@@ -151,41 +151,18 @@ public class ChessBoard {
         this.board[IntTo[1]][IntTo[0]] = temp;
         temp.pos = to;
         this.UpdatePieceLists(from, to, isWhiteTurn);
-        Square kingSquare = null;
-        if(isWhiteTurn){
-            for(String wpos : this.whitePieces){
-                var coords = CoordinateConvertor.StringToIntCoord(wpos);
-                var square = this.board[coords[1]][coords[0]];
-                assert (square != null);
-                if(square.getPiece() instanceof King){
-                    kingSquare = square;
-                    break;
-                }
-            }
+        var KingPosition = getKingPosition(isWhiteTurn);
+        var KingCoord = CoordinateConvertor.StringToIntCoord(KingPosition);
+        Square kingSquare = board[KingCoord[1]][KingCoord[0]];
+        assert (kingSquare != null);
+        assert (kingSquare.getPiece() instanceof King);
 
-            if(this.IsCheck(kingSquare.pos, isWhiteTurn)){
-                result = true;
-            } else {
-                result = false;
-            }
-
+        if(this.IsCheck(kingSquare.pos, isWhiteTurn)){
+            result = true;
         } else {
-            for(String pos : this.blackPieces){
-                var coords = CoordinateConvertor.StringToIntCoord(pos);
-                var square = this.board[coords[1]][coords[0]];
-                assert (square != null);
-                if(square.getPiece() instanceof King){
-                    kingSquare = square;
-                    break;
-                }
-            }
-
-            if(this.IsCheck(kingSquare.pos, isWhiteTurn)){
-                result = true;
-            } else {
-                result = false;
-            }
+            result = false;
         }
+
         UndoMove(from, to);
         return result;
     }
@@ -223,6 +200,11 @@ public class ChessBoard {
 
         for(String move : AttackingPieces){
             System.out.println(move);
+        }
+
+        //there are more than 2 pieces attacking the king and king cannot move, checkmate
+        if(AttackingPieces.size() > 1){
+            return true;
         }
 
         //check if friendly piece can block check
