@@ -76,10 +76,10 @@ public class Controller {
             if(chessBoard.wouldBeKingInDanger(from, to, whiteTurn)){
                 System.out.println("King would be in danger. Cannot move that piece!"); return false;
             }
-            if(!chessBoard.CanKingCastle(from,to)) {
+            /*if(!chessBoard.CanKingCastle(from,to)) {
                 System.out.println("King is not able to castle! Try different move.");
                 return false;
-            }
+            }*/
             return true;
         } else {
             System.out.println("Trying to move non-existing piece! Try again!");
@@ -127,6 +127,7 @@ public class Controller {
 
             if(movingPiece instanceof King){
                 if(IntsFrom[1] == 0 && IntsFrom[0] == 4 && IntsTo[1] == 0){
+                    System.out.println("Executed");
                     //move rook and update list
                     if(IntsTo[0] == 6){
                         var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{7,0});
@@ -169,6 +170,7 @@ public class Controller {
             if(movingPiece instanceof King){
                 if(IntsFrom[1] == 7 && IntsFrom[0] == 4 && IntsTo[1] == 7){
                     //move rook and update list
+                    System.out.println("Executed");
                     if(IntsTo[0] == 6){
                         var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{7,7});
                         var rookSquareMoving = newBoard.board[7][7];
