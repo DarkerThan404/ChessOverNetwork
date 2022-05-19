@@ -70,6 +70,17 @@ public class Game {
                             System.out.println("Cannot promote pawn to king");
                             continue;
                         }
+                        var firstToken = rawInput[0];
+                        var secondToken = rawInput[1];
+                        if(Controller.IsValidMove(board,firstToken,secondToken,whiteTurn)){
+                            try{
+                                board = Controller.ProcessPromotion(board, firstToken, secondToken, whiteTurn, thirdToken);
+                                board.draw();
+                                whiteTurn = !whiteTurn;
+                            } catch (IllegalArgumentException exception){
+                                System.out.println(exception.getMessage());
+                            }
+                        }
                     }
                 }
             }

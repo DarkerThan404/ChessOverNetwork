@@ -229,7 +229,45 @@ public class Controller {
         return newBoard;
     }
 
-
+    public static ChessBoard ProcessPromotion(ChessBoard chessBoard, String from, String to, boolean isWhiteSide, String promoTo){
+        var result = chessBoard;
+        var IntsFrom = CoordinateConvertor.StringToIntCoord(from);
+        var IntsTo = CoordinateConvertor.StringToIntCoord(to);
+        var targetSquare = chessBoard.board[IntsFrom[1]][IntsFrom[0]];
+        assert (targetSquare != null);
+        if(isWhiteSide){
+            if(IntsTo[1] != 0){
+                throw new IllegalArgumentException("Pawn cannot promote if it is not on the last rank!");
+            }
+        } else {
+            if(IntsTo[1] != 7){
+                throw new IllegalArgumentException("Pawn cannot promote if it is not on the last rank!");
+            }
+        }
+        switch (promoTo){
+            case "N":
+                targetSquare = new Square(to, new Knight(new Player(isWhiteSide)));
+                break;
+            case "B":
+                targetSquare = new Square(to, new Bishop(new Player(isWhiteSide)));
+                break;
+            case "Q":
+                targetSquare = new Square(to, new Queen(new Player(isWhiteSide)));
+                break;
+            case "R":
+                targetSquare = new Square(to, new Rook(new Player(isWhiteSide)));
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown promotion token! Try again");
+        }
+        result.coordLastPieceMoved = IntsTo;
+        result.board[IntsTo[1]][IntsTo[0]] = targetSquare;
+        targetSquare.pos = CoordinateConvertor.IntToStringCoord(IntsTo);
+        result.board[IntsFrom[1]][IntsFrom[0]] = null;
+        targetSquare.getPiece().moveCount++;
+        result.UpdatePieceLists(from, to, isWhiteSide);
+        return result;
+    }
 
 
 }
