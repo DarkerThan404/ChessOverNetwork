@@ -92,7 +92,7 @@ public class Game {
                 }
             }
         } catch (IOException ex){
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 

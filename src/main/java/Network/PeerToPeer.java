@@ -20,10 +20,13 @@ public class PeerToPeer {
     public void InitializeConnectionToPeer() throws IOException {
         if(arguments.length == 1){
             ServerSocket serverSocket = new ServerSocket(Integer.parseInt(arguments[0]));
+            System.out.println("Waiting for a client ...");
             connection = serverSocket.accept();
+            System.out.println("Connection established");
             isServer = true;
         } else if(arguments.length == 2){
             connection = new Socket(arguments[0], Integer.parseInt(arguments[1]));
+            System.out.println("Connection established");
             isServer = false;
         } else {
             throw new IOException("Wrong number of arguments!");
