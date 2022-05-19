@@ -4,6 +4,7 @@ package Game;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 public class Game {
 
@@ -54,15 +55,19 @@ public class Game {
                     }
                 } else if (rawInput.length == 3){
                     var thirdToken = rawInput[2];
-                    if(thirdToken == "R" ||
-                            thirdToken == "Q" ||
-                            thirdToken == "K" ||
-                            thirdToken == "B" ||
-                            thirdToken == "N" ||
-                            thirdToken == "P"
+                    if(Objects.equals(thirdToken, "R") ||
+                            Objects.equals(thirdToken, "Q") ||
+                            Objects.equals(thirdToken, "K") ||
+                            Objects.equals(thirdToken, "B") ||
+                            Objects.equals(thirdToken, "N") ||
+                            Objects.equals(thirdToken, "P")
                     ){
-                        if(thirdToken == "P"){
+                        if(thirdToken.equals("P")){
                             System.out.println("Cannot promote pawn to pawn");
+                            continue;
+                        }
+                        if(thirdToken.equals("K")){
+                            System.out.println("Cannot promote pawn to king");
                             continue;
                         }
                     }
