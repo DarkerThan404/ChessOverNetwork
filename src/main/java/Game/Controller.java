@@ -76,6 +76,10 @@ public class Controller {
             if(chessBoard.wouldBeKingInDanger(from, to, whiteTurn)){
                 System.out.println("King would be in danger. Cannot move that piece!"); return false;
             }
+            if(!chessBoard.CanKingCastle(from,to)) {
+                System.out.println("King is not able to castle! Try different move.");
+                return false;
+            }
             return true;
         } else {
             System.out.println("Trying to move non-existing piece! Try again!");
@@ -108,7 +112,7 @@ public class Controller {
        // System.out.println(" square X: " + IntsFrom[0] + " Y: " + IntsFrom[1]);
         if(whiteTurn){
             //System.out.println("Omeaglul");
-            if(targetSquare == null) System.out.println("Is null");
+            if(targetSquare == null) System.out.println("Square is null");
             var movingPiece = targetSquare.getPiece();
             if(movingPiece instanceof Pawn){ //en passent
                 if(IntsFrom[1] == 3 && IntsTo[1] == 2 && IntsFrom[0] != IntsTo[0] && newBoard.board[IntsTo[1]][IntsTo[0]] == null ){
@@ -121,6 +125,34 @@ public class Controller {
                 }
             }
 
+            if(movingPiece instanceof King){
+                if(IntsFrom[1] == 0 && IntsFrom[0] == 4 && IntsTo[1] == 0){
+                    //move rook and update list
+                    if(IntsTo[0] == 6){
+                        var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{7,0});
+                        var rookSquareMoving = newBoard.board[0][7];
+                        if(rookSquareMoving == null) {
+                            System.out.println("Rook is not there. Validation was unsuccessful");
+                        }
+                        newBoard.board[0][5] = rookSquareMoving;
+                        rookSquareMoving.pos = CoordinateConvertor.IntToStringCoord(new Integer[]{5,0});
+                        newBoard.board[0][7] = null;
+                        newBoard.UpdatePieceLists(rookPos,rookSquareMoving.pos,whiteTurn);
+                    }
+
+                    if(IntsTo[0]==2){
+                        var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{0,0});
+                        var rookSquareMoving = newBoard.board[0][0];
+                        if(rookSquareMoving == null) {
+                            System.out.println("Rook is not there. Validation was unsuccessful");
+                        }
+                        newBoard.board[0][3] = rookSquareMoving;
+                        rookSquareMoving.pos = CoordinateConvertor.IntToStringCoord(new Integer[]{3,0});
+                        newBoard.board[0][0] = null;
+                        newBoard.UpdatePieceLists(rookPos, rookSquareMoving.pos, whiteTurn);
+                    }
+                }
+            }
         } else {
             var movingPiece = targetSquare.getPiece();
             if(movingPiece instanceof Pawn){
@@ -131,6 +163,35 @@ public class Controller {
                     var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[0],IntsTo[1]-1});
                     int index = newBoard.blackPieces.indexOf(stringPos);
                     newBoard.blackPieces.remove(index);
+                }
+            }
+
+            if(movingPiece instanceof King){
+                if(IntsFrom[1] == 7 && IntsFrom[0] == 4 && IntsTo[1] == 7){
+                    //move rook and update list
+                    if(IntsTo[0] == 6){
+                        var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{7,7});
+                        var rookSquareMoving = newBoard.board[7][7];
+                        if(rookSquareMoving == null) {
+                            System.out.println("Rook is not there. Validation was unsuccessful");
+                        }
+                        newBoard.board[7][5] = rookSquareMoving;
+                        rookSquareMoving.pos = CoordinateConvertor.IntToStringCoord(new Integer[]{5,7});
+                        newBoard.board[7][7] = null;
+                        newBoard.UpdatePieceLists(rookPos,rookSquareMoving.pos,whiteTurn);
+                    }
+
+                    if(IntsTo[0]==2){
+                        var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{0,7});
+                        var rookSquareMoving = newBoard.board[7][0];
+                        if(rookSquareMoving == null) {
+                            System.out.println("Rook is not there. Validation was unsuccessful");
+                        }
+                        newBoard.board[7][3] = rookSquareMoving;
+                        rookSquareMoving.pos = CoordinateConvertor.IntToStringCoord(new Integer[]{3,7});
+                        newBoard.board[7][0] = null;
+                        newBoard.UpdatePieceLists(rookPos, rookSquareMoving.pos, whiteTurn);
+                    }
                 }
             }
         }
