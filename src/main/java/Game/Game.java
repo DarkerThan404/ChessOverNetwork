@@ -1,26 +1,31 @@
 package Game;
 
 
+import Network.PeerToPeer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
 public class Game {
-
+    private PeerToPeer  net;
     private Integer[] fromInput = new Integer[2];
     private Integer[] toInput = new Integer[2];
     private String horizontal = "abcdefgh";
     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-    public Game(){
+    public Game(PeerToPeer net){
+        this.net = net;
     }
 
     public void run(){
         ChessBoard board = Controller.CreateChessBoard();
         board.draw();
+
         boolean whiteTurn = true;
         try {
+            net.InitializeConnectionToPeer();
             while(true) {
                 if(board.IsCheckMate(whiteTurn)){
                     System.out.println("Checkmate");
@@ -39,22 +44,23 @@ public class Game {
                 } else {
                     System.out.println("Player 2 enter a move ");
                 }
-
-                var rawInput = getInput().split("\s+");
-                if (rawInput.length == 1) {
-                    if (rawInput[0].equals("help")) {
+                var rawInput = getInput(whiteTurn);
+                var splitInput = rawInput.split("\s+");
+                if (splitInput.length == 1) {
+                    if (splitInput[0].equals("help")) {
                         System.out.println("Help invoked");
                     }
-                } else if (rawInput.length == 2) {
-                    if (Controller.IsValidMove(board,rawInput[0],rawInput[1],whiteTurn)) {
-                        board = Controller.PerformMove(board, rawInput[0], rawInput[1], whiteTurn);
+                } else if (splitInput.length == 2) {
+                    if (Controller.IsValidMove(board,splitInput[0],splitInput[1],whiteTurn)) {
+                        board = Controller.PerformMove(board, splitInput[0], splitInput[1], whiteTurn);
                         whiteTurn = !whiteTurn;
                         board.draw();
+                        sendOutput(whiteTurn, rawInput);
                     } else {
                         System.out.println("Unsupported format! Perhaps piece cannot move that way");
                     }
-                } else if (rawInput.length == 3){
-                    var thirdToken = rawInput[2];
+                } else if (splitInput.length == 3){
+                    var thirdToken = splitInput[2];
                     if(Objects.equals(thirdToken, "R") ||
                             Objects.equals(thirdToken, "Q") ||
                             Objects.equals(thirdToken, "K") ||
@@ -70,13 +76,14 @@ public class Game {
                             System.out.println("Cannot promote pawn to king");
                             continue;
                         }
-                        var firstToken = rawInput[0];
-                        var secondToken = rawInput[1];
+                        var firstToken = splitInput[0];
+                        var secondToken = splitInput[1];
                         if(Controller.IsValidMove(board,firstToken,secondToken,whiteTurn)){
                             try{
                                 board = Controller.ProcessPromotion(board, firstToken, secondToken, whiteTurn, thirdToken);
                                 board.draw();
                                 whiteTurn = !whiteTurn;
+                                sendOutput(whiteTurn, rawInput);
                             } catch (IllegalArgumentException exception){
                                 System.out.println(exception.getMessage());
                             }
@@ -87,11 +94,21 @@ public class Game {
         } catch (IOException ex){
             ex.printStackTrace();
         }
-
     }
 
-    private String getInput() throws IOException {
-        var rawInput = bufferedReader.readLine();
-        return rawInput;
+    private String getInput(boolean isWhiteSide) throws IOException {
+        var result = "";
+        if(net.isServer && isWhiteSide || !isWhiteSide && !net.isServer){
+            result = bufferedReader.readLine();
+        } else {
+            result = net.getMessage();
+        }
+        return result;
+    }
+
+    private void sendOutput(boolean isWhiteSide, String message) throws IOException {
+        if(net.isServer && !isWhiteSide || !net.isServer && isWhiteSide){
+            net.sendMessage(message);
+        }
     }
 }

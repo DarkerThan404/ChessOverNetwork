@@ -12,6 +12,7 @@ public class PeerToPeer {
     private DataInputStream dataInputStream;
     private String[] arguments;
     private Socket connection;
+    public boolean isServer;
     public PeerToPeer(String[] args){
         arguments = args;
     }
@@ -20,8 +21,10 @@ public class PeerToPeer {
         if(arguments.length == 1){
             ServerSocket serverSocket = new ServerSocket(Integer.parseInt(arguments[0]));
             connection = serverSocket.accept();
+            isServer = true;
         } else if(arguments.length == 2){
             connection = new Socket(arguments[0], Integer.parseInt(arguments[1]));
+            isServer = false;
         } else {
             throw new IOException("Wrong number of arguments!");
         }
