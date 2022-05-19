@@ -1,12 +1,14 @@
 package Game;
 
 import Piece.King;
-import Piece.Rook;
 import Square.Square;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Chessboard class that keeps state on the board
+ */
 public class ChessBoard {
     private int size;
     public Square[][] board;
@@ -24,11 +26,12 @@ public class ChessBoard {
         blackPieces = new ArrayList<>();
     }
 
-    public void ResetMoves(){
-        allValidMoves.clear();
-    }
-
-    /// pos is position of king
+    /**
+     * Check if position is attacked or not.
+     * @param pos Position to test for being attacked
+     * @param isWhiteSide
+     * @return
+     */
     public boolean IsCheck(String pos, boolean isWhiteSide){
         if(isWhiteSide){
             for(String bpos : blackPieces){
@@ -56,6 +59,12 @@ public class ChessBoard {
         return false;
     }
 
+    /**
+     * Helper function to keep list of all pieces updated.
+     * @param from
+     * @param to
+     * @param isWhiteTurn
+     */
     public void UpdatePieceLists(String from, String to, boolean isWhiteTurn){
         if(isWhiteTurn){
             int index = this.whitePieces.indexOf(from);
@@ -76,6 +85,11 @@ public class ChessBoard {
         }
     }
 
+    /**
+     * Helper function that removes specific piece from the board.
+     * @param target
+     * @param isWhiteTurn
+     */
     public void RemovePieceFromList(String target, boolean isWhiteTurn){
         if(isWhiteTurn){
             int index = this.whitePieces.indexOf(target);
@@ -88,6 +102,11 @@ public class ChessBoard {
         }
     }
 
+    /**
+     * Helper function that adds piece to list.
+     * @param target
+     * @param isWhiteTurn
+     */
     public void AddPieceToList(String target, boolean isWhiteTurn){
         if(isWhiteTurn){
             this.whitePieces.add(target);
@@ -96,6 +115,9 @@ public class ChessBoard {
         }
     }
 
+    /**
+     * Draw current state of board to console.
+     */
     public void draw(){
         for(int x = 0; x < size; x++){
             System.out.print(( 8 - x  ) % 9 + " ");
@@ -112,6 +134,11 @@ public class ChessBoard {
         System.out.println("   a  b  c  d  e  f  g  h");
     }
 
+    /**
+     * Special function to check if king of specific color is in check
+     * @param isWhiteSide
+     * @return
+     */
     public boolean IsKingInCheck(boolean isWhiteSide){
         var targetPos = "";
         if(isWhiteSide){
@@ -137,7 +164,13 @@ public class ChessBoard {
         return this.IsCheck(targetPos, isWhiteSide);
     }
 
-    // this assumes that piece can make that move
+    /**
+     * Look ahead one move and checks if king is in danger.
+     * @param from
+     * @param to
+     * @param isWhiteTurn
+     * @return
+     */
     public boolean wouldBeKingInDanger( String from, String to, boolean isWhiteTurn){
         var result = false;
         var IntFrom = CoordinateConvertor.StringToIntCoord(from);
@@ -183,6 +216,12 @@ public class ChessBoard {
         }
     }
 
+    /**
+     * Checks if castling is valid move for king
+     * @param from
+     * @param to
+     * @return
+     */
     public boolean CanKingCastle(String from, String to){
         var fromCoord = CoordinateConvertor.StringToIntCoord(from);
         var toCoord = CoordinateConvertor.StringToIntCoord(to);
@@ -294,6 +333,11 @@ public class ChessBoard {
         }
     }
 
+    /**
+     * Check if king is being checkmated
+     * @param isWhiteSide
+     * @return
+     */
     public boolean IsCheckMate(boolean isWhiteSide){
         //check if the king is in check
         if(!IsKingInCheck(isWhiteSide)){
@@ -311,10 +355,6 @@ public class ChessBoard {
 
         var AttackingPieces = getAttackingPiece(kingPosition, isWhiteSide);
         assert (AttackingPieces.size() != 0);
-
-        for(String move : AttackingPieces){
-            System.out.println("Attacking piece: " + move);
-        }
 
         //there are more than 2 pieces attacking the king and king cannot move, checkmate
         if(AttackingPieces.size() > 1){
@@ -347,8 +387,11 @@ public class ChessBoard {
         return true;
     }
 
-
-
+    /**
+     * Helper function to find king position
+     * @param isWhiteSide
+     * @return
+     */
     private String getKingPosition(boolean isWhiteSide){
         var result = "";
         if(isWhiteSide){
@@ -375,6 +418,12 @@ public class ChessBoard {
         return result;
     }
 
+    /**
+     * Helper function to find attacking piece of king.
+     * @param attackedPos
+     * @param isWhiteSide
+     * @return
+     */
     private List<String> getAttackingPiece(String attackedPos, boolean isWhiteSide){
         var result = new ArrayList<String>();
         if(isWhiteSide){

@@ -5,6 +5,10 @@ import Player.Player;
 import Square.Square;
 
 public class Controller {
+    /**
+     * Initial method to create chessboard
+     * @return
+     */
     public static ChessBoard CreateChessBoard(){
         int size = 8;
         Square[][] squares = new Square[size][size];
@@ -61,6 +65,14 @@ public class Controller {
         return board;
     }
 
+    /**
+     * Gatekeeper method to validate input move
+     * @param chessBoard
+     * @param from
+     * @param to
+     * @param whiteTurn
+     * @return
+     */
     public static boolean IsValidMove(ChessBoard chessBoard, String from, String to, boolean whiteTurn){
         if(!CoordInBounds(from) || !CoordInBounds(to)){
             System.out.println("Not in bounds");
@@ -72,17 +84,13 @@ public class Controller {
         var movingPiece = chessBoard.board[fromCoord[1]][fromCoord[0]];
         if(movingPiece != null){
             var isPosibleLogicalMove = movingPiece.getPiece().IsValidMove(chessBoard, fromCoord, toCoord, whiteTurn);
-            if(!isPosibleLogicalMove) { System.out.println("Piece doesnt move that way"); return false; }
+            if(!isPosibleLogicalMove) { System.out.println("It is not legal move"); return false; }
             if(chessBoard.wouldBeKingInDanger(from, to, whiteTurn)){
                 System.out.println("King would be in danger. Cannot move that piece!"); return false;
             }
-            /*if(!chessBoard.CanKingCastle(from,to)) {
-                System.out.println("King is not able to castle! Try different move.");
-                return false;
-            }*/
             return true;
         } else {
-            System.out.println("Trying to move non-existing piece! Try again!");
+            System.out.println("There is no piece on that square! Try again!");
         }
 
         return false;
@@ -102,17 +110,24 @@ public class Controller {
         }
         return true;
     }
-    /// This method assumes that input values are always correct
+
+    /**
+     * Method that does intended move and updates position.
+     * @param board
+     * @param from
+     * @param to
+     * @param whiteTurn
+     * @return
+     */
     public static ChessBoard PerformMove(ChessBoard board, String from, String to, boolean whiteTurn){
         var newBoard = board;
         var IntsFrom = CoordinateConvertor.StringToIntCoord(from);
         var IntsTo = CoordinateConvertor.StringToIntCoord(to);
         var targetSquare = newBoard.board[IntsFrom[1]][IntsFrom[0]];
         assert (targetSquare != null);
-       // System.out.println(" square X: " + IntsFrom[0] + " Y: " + IntsFrom[1]);
+
         if(whiteTurn){
-            //System.out.println("Omeaglul");
-            if(targetSquare == null) System.out.println("Square is null");
+
             var movingPiece = targetSquare.getPiece();
             if(movingPiece instanceof Pawn){
                 //en passant
@@ -183,7 +198,6 @@ public class Controller {
             if(movingPiece instanceof King){
                 if(IntsFrom[1] == 0 && IntsFrom[0] == 4 && IntsTo[1] == 0){
                     //move rook and update list
-                    System.out.println("Executed");
                     if(IntsTo[0] == 6){
                         var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{7,0});
                         var rookSquareMoving = newBoard.board[0][7];
@@ -218,17 +232,18 @@ public class Controller {
         newBoard.board[IntsFrom[1]][IntsFrom[0]] = null;
         targetSquare.getPiece().moveCount++;
         newBoard.UpdatePieceLists(from, to, whiteTurn);
-        /*System.out.println("White list: ");
-        for(String pos : newBoard.whitePieces){
-            System.out.println(pos);
-        }
-        System.out.println("Black list: ");
-        for(String pos : newBoard.blackPieces){
-            System.out.println(pos);
-        }*/
         return newBoard;
     }
 
+    /**
+     * Dedicated method for pawn promotion to something else than Queen
+     * @param chessBoard
+     * @param from
+     * @param to
+     * @param isWhiteSide
+     * @param promoTo
+     * @return
+     */
     public static ChessBoard ProcessPromotion(ChessBoard chessBoard, String from, String to, boolean isWhiteSide, String promoTo){
         var result = chessBoard;
         var IntsFrom = CoordinateConvertor.StringToIntCoord(from);

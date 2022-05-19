@@ -17,6 +17,10 @@ public class PeerToPeer {
         arguments = args;
     }
 
+    /**
+     * Establishes connection between peers, based on number of arguments passed.
+     * @throws IOException
+     */
     public void InitializeConnectionToPeer() throws IOException {
         if(arguments.length == 1){
             ServerSocket serverSocket = new ServerSocket(Integer.parseInt(arguments[0]));
@@ -35,15 +39,29 @@ public class PeerToPeer {
         dataOutputStream = new DataOutputStream(connection.getOutputStream());
     }
 
+    /**
+     * Gets message from peer
+     * @return String message
+     * @throws IOException
+     */
     public String getMessage() throws IOException {
         return dataInputStream.readUTF();
     }
 
+    /**
+     * Send message to peer
+     * @param message message to send
+     * @throws IOException
+     */
     public void sendMessage(String message) throws IOException {
         dataOutputStream.writeUTF(message);
         dataOutputStream.flush();
     }
 
+    /**
+     * Closes connection after session, needs to be called explicitly.
+     * @throws IOException
+     */
     public void closeConnection() throws IOException {
         connection.close();
         dataOutputStream.close();
