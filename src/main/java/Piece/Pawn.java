@@ -27,7 +27,7 @@ public class Pawn extends Piece{
     public boolean IsValidMove(ChessBoard chessBoard, Integer[] from, Integer[] to, boolean whiteTurn) {
 
         if(whiteTurn != this.player.isWhiteSide()){
-            System.out.println("You cant play with this piece!");
+            System.out.println("You cant play with opposite color piece!");
             return false;
         }
 

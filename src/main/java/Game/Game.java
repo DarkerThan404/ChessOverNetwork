@@ -33,6 +33,11 @@ public class Game {
                         System.out.println("Black king is in check!");
                     }
                 }
+                if(whiteTurn){
+                    System.out.println("Player 1 enter a move ");
+                } else {
+                    System.out.println("Player 2 enter a move ");
+                }
 
                 var rawInput = getInput().split("\s+");
                 if (rawInput.length == 1) {
@@ -46,6 +51,20 @@ public class Game {
                         board.draw();
                     } else {
                         System.out.println("Unsupported format! Perhaps piece cannot move that way");
+                    }
+                } else if (rawInput.length == 3){
+                    var thirdToken = rawInput[2];
+                    if(thirdToken == "R" ||
+                            thirdToken == "Q" ||
+                            thirdToken == "K" ||
+                            thirdToken == "B" ||
+                            thirdToken == "N" ||
+                            thirdToken == "P"
+                    ){
+                        if(thirdToken == "P"){
+                            System.out.println("Cannot promote pawn to pawn");
+                            continue;
+                        }
                     }
                 }
             }
