@@ -126,51 +126,14 @@ public class Controller {
             }
 
             if(movingPiece instanceof King){
-                if(IntsFrom[1] == 0 && IntsFrom[0] == 4 && IntsTo[1] == 0){
-                    System.out.println("Executed");
-                    //move rook and update list
-                    if(IntsTo[0] == 6){
-                        var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{7,0});
-                        var rookSquareMoving = newBoard.board[0][7];
-                        if(rookSquareMoving == null) {
-                            System.out.println("Rook is not there. Validation was unsuccessful");
-                        }
-                        newBoard.board[0][5] = rookSquareMoving;
-                        rookSquareMoving.pos = CoordinateConvertor.IntToStringCoord(new Integer[]{5,0});
-                        newBoard.board[0][7] = null;
-                        newBoard.UpdatePieceLists(rookPos,rookSquareMoving.pos,whiteTurn);
-                    }
-
-                    if(IntsTo[0]==2){
-                        var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{0,0});
-                        var rookSquareMoving = newBoard.board[0][0];
-                        if(rookSquareMoving == null) {
-                            System.out.println("Rook is not there. Validation was unsuccessful");
-                        }
-                        newBoard.board[0][3] = rookSquareMoving;
-                        rookSquareMoving.pos = CoordinateConvertor.IntToStringCoord(new Integer[]{3,0});
-                        newBoard.board[0][0] = null;
-                        newBoard.UpdatePieceLists(rookPos, rookSquareMoving.pos, whiteTurn);
-                    }
-                }
-            }
-        } else {
-            var movingPiece = targetSquare.getPiece();
-            if(movingPiece instanceof Pawn){
-                if(IntsFrom[1] == 4 && IntsTo[1] == 5 && IntsFrom[0] != IntsTo[0] && newBoard.board[IntsTo[1]][IntsTo[0]] == null ){
-                    var EnPassableSquare = newBoard.board[IntsTo[1]-1][IntsTo[0]];
-                    assert (EnPassableSquare != null);
-                    newBoard.board[IntsTo[1]-1][IntsTo[0]] = null;
-                    var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[0],IntsTo[1]-1});
-                    int index = newBoard.blackPieces.indexOf(stringPos);
-                    newBoard.blackPieces.remove(index);
-                }
-            }
-
-            if(movingPiece instanceof King){
+                System.out.println("Moving piece is king");
+                System.out.println(IntsFrom[1]);
+                System.out.println(IntsFrom[0]);
+                System.out.println(IntsTo[1]);
+                System.out.println(IntsTo[0]);
                 if(IntsFrom[1] == 7 && IntsFrom[0] == 4 && IntsTo[1] == 7){
-                    //move rook and update list
                     System.out.println("Executed");
+                    //move rook and update list
                     if(IntsTo[0] == 6){
                         var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{7,7});
                         var rookSquareMoving = newBoard.board[7][7];
@@ -196,6 +159,48 @@ public class Controller {
                     }
                 }
             }
+        } else {
+            var movingPiece = targetSquare.getPiece();
+            if(movingPiece instanceof Pawn){
+                if(IntsFrom[1] == 4 && IntsTo[1] == 5 && IntsFrom[0] != IntsTo[0] && newBoard.board[IntsTo[1]][IntsTo[0]] == null ){
+                    var EnPassableSquare = newBoard.board[IntsTo[1]-1][IntsTo[0]];
+                    assert (EnPassableSquare != null);
+                    newBoard.board[IntsTo[1]-1][IntsTo[0]] = null;
+                    var stringPos = CoordinateConvertor.IntToStringCoord(new Integer[]{IntsTo[0],IntsTo[1]-1});
+                    int index = newBoard.blackPieces.indexOf(stringPos);
+                    newBoard.blackPieces.remove(index);
+                }
+            }
+
+            if(movingPiece instanceof King){
+                if(IntsFrom[1] == 0 && IntsFrom[0] == 4 && IntsTo[1] == 0){
+                    //move rook and update list
+                    System.out.println("Executed");
+                    if(IntsTo[0] == 6){
+                        var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{7,0});
+                        var rookSquareMoving = newBoard.board[0][7];
+                        if(rookSquareMoving == null) {
+                            System.out.println("Rook is not there. Validation was unsuccessful");
+                        }
+                        newBoard.board[0][5] = rookSquareMoving;
+                        rookSquareMoving.pos = CoordinateConvertor.IntToStringCoord(new Integer[]{5,0});
+                        newBoard.board[0][7] = null;
+                        newBoard.UpdatePieceLists(rookPos,rookSquareMoving.pos,whiteTurn);
+                    }
+
+                    if(IntsTo[0]==2){
+                        var rookPos = CoordinateConvertor.IntToStringCoord(new Integer[]{0,0});
+                        var rookSquareMoving = newBoard.board[0][0];
+                        if(rookSquareMoving == null) {
+                            System.out.println("Rook is not there. Validation was unsuccessful");
+                        }
+                        newBoard.board[0][3] = rookSquareMoving;
+                        rookSquareMoving.pos = CoordinateConvertor.IntToStringCoord(new Integer[]{3,0});
+                        newBoard.board[0][0] = null;
+                        newBoard.UpdatePieceLists(rookPos, rookSquareMoving.pos, whiteTurn);
+                    }
+                }
+            }
         }
         board.coordLastPieceMoved = IntsTo;
         newBoard.board[IntsTo[1]][IntsTo[0]] = targetSquare;
@@ -203,6 +208,14 @@ public class Controller {
         newBoard.board[IntsFrom[1]][IntsFrom[0]] = null;
         targetSquare.getPiece().moveCount++;
         newBoard.UpdatePieceLists(from, to, whiteTurn);
+        System.out.println("White list: ");
+        for(String pos : newBoard.whitePieces){
+            System.out.println(pos);
+        }
+        System.out.println("Black list: ");
+        for(String pos : newBoard.blackPieces){
+            System.out.println(pos);
+        }
         return newBoard;
     }
 

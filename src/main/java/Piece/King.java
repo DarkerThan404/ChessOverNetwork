@@ -32,6 +32,7 @@ public class King extends Piece{
         this.validMoves = this.getValidMoves(chessBoard,CoordinateConvertor.IntToStringCoord(from));
         //special case where king can castle
         if(chessBoard.CanKingCastle(CoordinateConvertor.IntToStringCoord(from),CoordinateConvertor.IntToStringCoord(to))){
+            System.out.println("King can castle");
             return true;
         }
         if(this.validMoves.contains(CoordinateConvertor.IntToStringCoord(to))){
@@ -65,11 +66,7 @@ public class King extends Piece{
                 }
             }
         }
-        if(moveCount == 0){
-            assert (yFrom == 0);
-            result.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom + 2, yFrom}));
-            result.add(CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom - 2, yFrom}));
-        }
+
         return result;
     }
 

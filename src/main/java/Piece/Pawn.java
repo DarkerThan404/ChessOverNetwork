@@ -122,6 +122,7 @@ public class Pawn extends Piece{
                 var diagonalPiece = board[yFrom + 1][xFrom - 1];
                 if(diagonalPiece != null){
                     if(diagonalPiece.getPiece().player.isWhiteSide() == true){
+
                         var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom - 1, yFrom + 1});
 
                         result.add(strCoord);
@@ -133,6 +134,7 @@ public class Pawn extends Piece{
                 var diagonalPiece = board[yFrom + 1][xFrom + 1];
                 if(diagonalPiece != null){
                     if(diagonalPiece.getPiece().player.isWhiteSide() == true){
+
                         var strCoord = CoordinateConvertor.IntToStringCoord(new Integer[]{xFrom + 1, yFrom + 1});
 
                         result.add(strCoord);
