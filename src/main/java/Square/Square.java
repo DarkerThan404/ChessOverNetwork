@@ -18,8 +18,8 @@ public class Square {
     }
 
     /**
-     * Return piece that is standing on this square
-     * @return
+     * Getter for piece on square
+     * @return Piece
      */
     public Piece getPiece(){
         return piece;
@@ -27,8 +27,8 @@ public class Square {
 
     /**
      * Return valid moves with respect to current chessboard situation.
-     * @param chessBoard
-     * @return
+     * @param chessBoard chessboard that keeps state of game
+     * @return All moves that piece can take with given chessboard situation
      */
     public List<String> getValidMoves(ChessBoard chessBoard){
         return piece.getValidMoves(chessBoard, pos);

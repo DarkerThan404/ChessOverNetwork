@@ -1,3 +1,5 @@
+package ChessOverNetwork;
+
 import Game.*;
 import Network.PeerToPeer;
 

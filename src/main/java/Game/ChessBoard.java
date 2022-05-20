@@ -29,8 +29,8 @@ public class ChessBoard {
     /**
      * Check if position is attacked or not.
      * @param pos Position to test for being attacked
-     * @param isWhiteSide
-     * @return
+     * @param isWhiteSide True if it is white's turn , false if it's black's turn
+     * @return true, if position is being attack by opposite color piece
      */
     public boolean IsCheck(String pos, boolean isWhiteSide){
         if(isWhiteSide){
@@ -61,9 +61,9 @@ public class ChessBoard {
 
     /**
      * Helper function to keep list of all pieces updated.
-     * @param from
-     * @param to
-     * @param isWhiteTurn
+     * @param from Position of piece being moved
+     * @param to Position of piece after move
+     * @param isWhiteTurn True if it's white's turn, false if it's black's turn
      */
     public void UpdatePieceLists(String from, String to, boolean isWhiteTurn){
         if(isWhiteTurn){
@@ -87,8 +87,8 @@ public class ChessBoard {
 
     /**
      * Helper function that removes specific piece from the board.
-     * @param target
-     * @param isWhiteTurn
+     * @param target Position to being from list
+     * @param isWhiteTurn True, if it's white's turn, false if it's black's turn
      */
     public void RemovePieceFromList(String target, boolean isWhiteTurn){
         if(isWhiteTurn){
@@ -104,8 +104,8 @@ public class ChessBoard {
 
     /**
      * Helper function that adds piece to list.
-     * @param target
-     * @param isWhiteTurn
+     * @param target Position to being added to the list
+     * @param isWhiteTurn True, if it's white's turn, false if it's black's turn
      */
     public void AddPieceToList(String target, boolean isWhiteTurn){
         if(isWhiteTurn){
@@ -136,8 +136,8 @@ public class ChessBoard {
 
     /**
      * Special function to check if king of specific color is in check
-     * @param isWhiteSide
-     * @return
+     * @param isWhiteSide True, if it's white's turn, false if it's black's turn
+     * @return True, if king of specified color is in check.
      */
     public boolean IsKingInCheck(boolean isWhiteSide){
         var targetPos = "";
@@ -166,10 +166,10 @@ public class ChessBoard {
 
     /**
      * Look ahead one move and checks if king is in danger.
-     * @param from
-     * @param to
-     * @param isWhiteTurn
-     * @return
+     * @param from Position before move is taken
+     * @param to Position after move is taken
+     * @param isWhiteTurn True, if it's white's turn, false if it's black's turn
+     * @return True if taken move, had caused king being in danger
      */
     public boolean wouldBeKingInDanger( String from, String to, boolean isWhiteTurn){
         var result = false;
@@ -218,9 +218,9 @@ public class ChessBoard {
 
     /**
      * Checks if castling is valid move for king
-     * @param from
-     * @param to
-     * @return
+     * @param from Position before move is taken
+     * @param to Position after move is taken
+     * @return True if king can castle
      */
     public boolean CanKingCastle(String from, String to){
         var fromCoord = CoordinateConvertor.StringToIntCoord(from);
@@ -335,8 +335,8 @@ public class ChessBoard {
 
     /**
      * Check if king is being checkmated
-     * @param isWhiteSide
-     * @return
+     * @param isWhiteSide True, if it's white's turn, false if it's black's turn
+     * @return True if king is checkmated
      */
     public boolean IsCheckMate(boolean isWhiteSide){
         //check if the king is in check
@@ -389,8 +389,8 @@ public class ChessBoard {
 
     /**
      * Helper function to find king position
-     * @param isWhiteSide
-     * @return
+     * @param isWhiteSide True, if it's white's turn, false if it's black's turn
+     * @return Position of the king
      */
     private String getKingPosition(boolean isWhiteSide){
         var result = "";
@@ -420,9 +420,9 @@ public class ChessBoard {
 
     /**
      * Helper function to find attacking piece of king.
-     * @param attackedPos
-     * @param isWhiteSide
-     * @return
+     * @param attackedPos Piece position
+     * @param isWhiteSide True, if it's white's turn, false if it's black's turn
+     * @return List of positions that attack king
      */
     private List<String> getAttackingPiece(String attackedPos, boolean isWhiteSide){
         var result = new ArrayList<String>();

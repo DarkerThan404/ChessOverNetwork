@@ -17,7 +17,7 @@ public class Game {
     }
 
     /**
-     * Main loop of the game
+     * ChessOverNetwork.Main loop of the game
      */
     public void run(){
 
@@ -107,8 +107,8 @@ public class Game {
 
     /**
      * Gets input either from input or network depending on game state
-     * @param isWhiteSide
-     * @return
+     * @param isWhiteSide True, if it's white's turn, false if it's black's turn
+     * @return Message, processed by network or standard input
      * @throws IOException
      */
     private String getInput(boolean isWhiteSide) throws IOException {
@@ -133,8 +133,8 @@ public class Game {
 
     /**
      * Sends message depending on game state
-     * @param isWhiteSide
-     * @param message
+     * @param isWhiteSide True, if it's white's turn, false if it's black's turn
+     * @param message Message to send to other side.
      * @throws IOException
      */
     private void sendOutput(boolean isWhiteSide, String message) throws IOException {

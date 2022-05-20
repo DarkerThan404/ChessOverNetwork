@@ -27,18 +27,18 @@ public abstract class Piece {
 
     /**
      * Validates if input moves are valid used in controller.
-     * @param board
-     * @param from
-     * @param to
-     * @param whiteTurn
+     * @param chessBoard chessboard that keeps state of game
+     * @param from Position before move would have been taken
+     * @param to Position after move would have been taken
+     * @param whiteTurn True, if it's white's turn, false if it's black's turn
      * @return
      */
-    public abstract boolean IsValidMove(ChessBoard board, Integer[] from, Integer[] to, boolean whiteTurn);
+    public abstract boolean IsValidMove(ChessBoard chessBoard, Integer[] from, Integer[] to, boolean whiteTurn);
 
     /**
      * Returns all valid moves that piece can make
-     * @param chessBoard
-     * @param from
+     * @param chessBoard chessboard that keeps state of game
+     * @param from Position of piece getting valid moves from
      * @return
      */
     public abstract List<String> getValidMoves(ChessBoard chessBoard, String from);

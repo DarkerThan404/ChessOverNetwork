@@ -6,8 +6,8 @@ import Square.Square;
 
 public class Controller {
     /**
-     * Initial method to create chessboard
-     * @return
+     * Initial factory method to create chessboard
+     * @return ChessBoard
      */
     public static ChessBoard CreateChessBoard(){
         int size = 8;
@@ -67,11 +67,11 @@ public class Controller {
 
     /**
      * Gatekeeper method to validate input move
-     * @param chessBoard
-     * @param from
-     * @param to
-     * @param whiteTurn
-     * @return
+     * @param chessBoard chessboard that keeps state of game
+     * @param from Position before move is taken
+     * @param to Position after move is taken
+     * @param whiteTurn True, if it's white's turn, false if it's black's turn
+     * @return True if move is according to rules of chess , false otherwise
      */
     public static boolean IsValidMove(ChessBoard chessBoard, String from, String to, boolean whiteTurn){
         if(!CoordInBounds(from) || !CoordInBounds(to)){
@@ -113,11 +113,11 @@ public class Controller {
 
     /**
      * Method that does intended move and updates position.
-     * @param board
-     * @param from
-     * @param to
-     * @param whiteTurn
-     * @return
+     * @param board chessboard that keeps state of game
+     * @param from Position before move is taken
+     * @param to Position after move is taken
+     * @param whiteTurn True, if it's white's turn, false if it's black's turn
+     * @return updated chessboard
      */
     public static ChessBoard PerformMove(ChessBoard board, String from, String to, boolean whiteTurn){
         var newBoard = board;
@@ -237,12 +237,12 @@ public class Controller {
 
     /**
      * Dedicated method for pawn promotion to something else than Queen
-     * @param chessBoard
-     * @param from
-     * @param to
-     * @param isWhiteSide
-     * @param promoTo
-     * @return
+     * @param chessBoard chessboard that keeps state of game
+     * @param from Position before move is taken
+     * @param to Position after move is taken
+     * @param isWhiteSide True, if it's white's turn, false if it's black's turn
+     * @param promoTo Piece type
+     * @return updated chessboard
      */
     public static ChessBoard ProcessPromotion(ChessBoard chessBoard, String from, String to, boolean isWhiteSide, String promoTo){
         var result = chessBoard;

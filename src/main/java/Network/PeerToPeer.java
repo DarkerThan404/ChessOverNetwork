@@ -41,7 +41,7 @@ public class PeerToPeer {
 
     /**
      * Gets message from peer
-     * @return String message
+     * @return Message
      * @throws IOException
      */
     public String getMessage() throws IOException {
